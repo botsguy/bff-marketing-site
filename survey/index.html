@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  
+
+<!-- SEO Meta Tags -->
+<title>BFF Marketing SmartSite Quiz for Beauty Pros</title>
+<meta name="description" content="A luxury multi-step survey page for BFF Marketing to help makeup artists and hairstylists discover their perfect SmartSite and automated booking system." />
+<meta property="og:title" content="BFF Marketing SmartSite Quiz for Beauty Pros" />
+<meta property="og:description" content="A luxury multi-step survey page for BFF Marketing to help makeup artists and hairstylists discover their perfect SmartSite and automated booking system." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="BFF Marketing SmartSite Quiz for Beauty Pros" />
+<meta name="twitter:description" content="A luxury multi-step survey page for BFF Marketing to help makeup artists and hairstylists discover their perfect SmartSite and automated booking system." />
+<!-- End SEO Meta Tags -->
+
+<script data-field-replace>
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var fields={};
+  var paramMap={
+    'first_name':'firstName','last_name':'lastName','full_name':'fullName',
+    'email':'email','phone':'phone','company':'company',
+    'city':'city','state':'state','country':'country'
+  };
+  var skipTags={'SCRIPT':1,'STYLE':1,'NOSCRIPT':1,'TEXTAREA':1,'CODE':1,'PRE':1};
+  var hasUrlFields=false;
+  for(var p in paramMap){
+    var v=params.get(p);
+    if(v){fields[paramMap[p]]=v;hasUrlFields=true;}
+  }
+  var contactId=params.get('contact_id');
+  function esc(s){
+    if(!s)return s;
+    var d=document.createElement('div');
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+  function doReplace(data){
+    var r={};
+    r['{{full_name}}']=esc(((data.firstName||'')+' '+(data.lastName||'')).trim()||((data.fullName||data.name)||''));
+    r['{{first_name}}']=esc(data.firstName||(data.name?data.name.split(' ')[0]:'')||'');
+    r['{{last_name}}']=esc(data.lastName||(data.name&&data.name.indexOf(' ')>-1?data.name.substring(data.name.indexOf(' ')+1):'')||'');
+    r['{{email}}']=esc(data.email||'');
+    r['{{phone}}']=esc(data.phone||'');
+    r['{{company}}']=esc(data.company||'');
+    r['{{city}}']=esc(data.city||'');
+    r['{{state}}']=esc(data.state||'');
+    r['{{country}}']=esc(data.country||'');
+    r['{{date}}']=new Date().toLocaleDateString();
+    r['{{time}}']=new Date().toLocaleTimeString();
+    r['{{location}}']=[data.city,data.state,data.country].filter(Boolean).join(', ');
+    r['{{tracking_id}}']=esc(data.trackingId||'');
+    r['{{lastClickedProduct}}']=esc(data.lastClickedProduct||'');
+    r['{{lastProductClickDate}}']=esc(data.lastProductClickDate||'');
+    r['{{lastClickedProductPrice}}']=esc(data.lastClickedProductPrice||'');
+    r['{{lastClickedProductURL}}']=esc(data.lastClickedProductURL||'');
+    r['{{productsClickedCount}}']=esc(data.productsClickedCount||'0');
+    r['{{ip_address}}']=esc(data.ipAddress||'');
+    r['{{ip}}']=esc(data.ipAddress||'');
+    if(data.customFields){
+      for(var k in data.customFields){
+        r['{{'+k+'}}']=esc(String(data.customFields[k]||''));
+      }
+    }
+    params.forEach(function(v,k){
+      if(!paramMap[k]&&k!=='contact_id'&&k!=='page_id'&&k.indexOf('utm_')!==0){
+        r['{{'+k+'}}']=esc(v);
+      }
+    });
+    var hasValues=false;
+    for(var key in r){if(r[key]){hasValues=true;break;}}
+    if(!hasValues)return;
+    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+      acceptNode:function(n){
+        var p=n.parentNode;
+        if(p&&skipTags[p.nodeName])return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var node;
+    while(node=walker.nextNode()){
+      var txt=node.nodeValue;
+      if(txt&&txt.indexOf('{{')>-1){
+        var changed=txt;
+        for(var ph in r){
+          if(r[ph]&&changed.indexOf(ph)>-1){
+            changed=changed.split(ph).join(r[ph]);
+          }
+        }
+        if(changed!==txt)node.nodeValue=changed;
+      }
+    }
+    var attrs=['value','placeholder','content','alt','title'];
+    attrs.forEach(function(attr){
+      var els=document.querySelectorAll('['+attr+'*="{{"]');
+      for(var i=0;i<els.length;i++){
+        var tag=els[i].tagName;
+        if(skipTags[tag])continue;
+        var val=els[i].getAttribute(attr);
+        if(val){
+          var nv=val;
+          for(var ph in r){
+            if(r[ph]&&nv.indexOf(ph)>-1){
+              nv=nv.split(ph).join(r[ph]);
+            }
+          }
+          if(nv!==val)els[i].setAttribute(attr,nv);
+        }
+      }
+    });
+  }
+  function run(){
+    if(contactId){
+      var xhr=new XMLHttpRequest();
+      xhr.open('GET','https://paymegpt.com/api/landing/context/'+encodeURIComponent(contactId)+'?page_id=2542');
+      xhr.onload=function(){
+        if(xhr.status===200){
+          try{
+            var resp=JSON.parse(xhr.responseText);
+            if(resp.success&&resp.contact){
+              var merged=resp.contact;
+              for(var k in fields){merged[k]=fields[k];}
+              doReplace(merged);
+              return;
+            }
+          }catch(e){}
+        }
+        if(hasUrlFields)doReplace(fields);
+      };
+      xhr.onerror=function(){if(hasUrlFields)doReplace(fields);};
+      xhr.send();
+    }else if(hasUrlFields){
+      doReplace(fields);
+    }
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}
+  else{run();}
+})();
+</script>
+<script data-payment>
+(function(){
+  var slug='EG5ELrCK5a';
+  var apiBase='https://paymegpt.com';
+  function findEmail(){
+    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}
+    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}
+    return '';
+  }
+  function findName(){
+    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}
+    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}
+    return '';
+  }
+  var __realProcessPayment=function(a,b,c,d,e){
+    var amountCents,email,productName,productDescription,customerName,quantity;
+    if(a&&typeof a==='object'){
+      amountCents=a.amountCents;email=a.email;productName=a.productName;
+      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;
+    }else{
+      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';
+      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;
+    }
+    if(!email)email=findEmail();
+    if(!customerName)customerName=findName();
+    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}
+    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}
+    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
+    var successBase=window.location.href.split('?')[0];
+    return fetch(apiBase+'/api/landing-pages/public/'+slug+'/payment/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
+      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}
+    });
+  };
+  Object.defineProperty(window,'__processPayment',{value:__realProcessPayment,writable:false,configurable:false});
+  document.addEventListener('DOMContentLoaded',function(){
+    var urlParams=new URLSearchParams(window.location.search);
+    if(urlParams.get('payment')==='success'){
+      var pName=urlParams.get('product')||'your item';
+      var overlay=document.createElement('div');overlay.id='payment-success-overlay';
+      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      document.body.appendChild(overlay);
+    }
+  });
+})();
+</script>  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-white">
+  <!-- ============================================================================ -->
+  <!-- HEADER SECTION: Sticky brand navigation with luxury black bar and logo      -->
+  <!-- Features: Minimal nav, strong brand lockup, mobile-safe padding             -->
+  <!-- Mobile Padding: px-4 ensures logo never touches viewport edges              -->
+  <!-- ============================================================================ -->
+  <header class="sticky top-0 z-50 bg-[#0A0A0A] border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <a href="#" class="text-[#E91E8C] font-heading text-3xl md:text-4xl tracking-wide" aria-label="BFF Marketing home">bff✦</a>
+      <div class="text-white/70 text-sm hidden sm:block">Luxury SmartSite + Automated Booking</div>
+    </div>
+  </header>
+
+  <!-- ============================================================================ -->
+  <!-- HERO SECTION: Gradient intro above the survey card                          -->
+  <!-- Features: Sparkle-decorated headline, supportive copy, brand-aligned colors -->
+  <!-- Mobile Padding: px-4 md:px-6 ensures headline never clips on small screens  -->
+  <!-- ============================================================================ -->
+  <section data-section="hero" class="relative overflow-hidden bg-gradient-to-b from-[#F8B4D9]/55 via-white to-white">
+    <div class="floating-sparkles absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span class="left-[8%] top-[70%]">✦</span><span class="left-[18%] top-[85%]">✧</span><span class="left-[28%] top-[62%]">✦</span>
+      <span class="left-[41%] top-[78%]">✧</span><span class="left-[55%] top-[88%]">✦</span><span class="left-[68%] top-[74%]">✧</span>
+      <span class="left-[79%] top-[84%]">✦</span><span class="left-[91%] top-[66%]">✧</span>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 pt-10 pb-6 md:pt-14 md:pb-10 text-center relative">
+      <p class="text-[#E91E8C] font-semibold tracking-[0.3em] uppercase text-xs md:text-sm">BFF Marketing ✦ SmartSite Survey</p>
+      <h1 class="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none text-[#0A0A0A] mt-3">
+        ✦ Let's Find Your Perfect SmartSite. ✧
+      </h1>
+      <p class="mt-4 max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-[#0A0A0A]/80">
+        Answer 5 quick questions so we can build the right system for your beauty business.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================================ -->
+  <!-- SURVEY SECTION: Multi-step quiz with progress bar and animated card         -->
+  <!-- Features: Single-step visibility, tile selection, step transitions          -->
+  <!-- Mobile Padding: Full-width-safe inner spacing with rounded luxury card      -->
+  <!-- ============================================================================ -->
+  <main class="relative">
+    <div class="max-w-3xl mx-auto px-4 md:px-6 lg:px-8 pb-14 md:pb-20">
+      <div class="survey-card bg-white rounded-[24px] border border-[#0A0A0A]/10 overflow-hidden -mt-4 md:-mt-6 relative">
+        <div class="h-1 bg-[#0A0A0A]/10">
+          <div id="progressFill" class="progress-fill h-full w-[20%]"></div>
+        </div>
+
+        <div class="px-4 py-5 md:px-8 md:py-8">
+          <div class="flex items-center justify-between gap-2 mb-6">
+            <div class="flex items-center gap-2" aria-label="Survey progress">
+              <span class="text-xs uppercase tracking-[0.25em] text-[#0A0A0A]/50">Step</span>
+              <span id="stepCount" class="font-heading text-2xl text-[#E91E8C]">1</span>
+              <span class="text-[#0A0A0A]/40">/ 5</span>
+            </div>
+            <div class="flex items-center gap-2" aria-hidden="true">
+              <span class="text-[#E91E8C]">✦</span><span class="text-[#F8B4D9]">✧</span><span class="text-[#E91E8C]">✦</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-5 gap-2 mb-6">
+            <div class="h-2 rounded-full bg-[#E91E8C]" id="dot-1"></div>
+            <div class="h-2 rounded-full bg-[#0A0A0A]/15" id="dot-2"></div>
+            <div class="h-2 rounded-full bg-[#0A0A0A]/15" id="dot-3"></div>
+            <div class="h-2 rounded-full bg-[#0A0A0A]/15" id="dot-4"></div>
+            <div class="h-2 rounded-full bg-[#0A0A0A]/15" id="dot-5"></div>
+          </div>
+
+          <a href="#" id="backLink" class="inline-flex items-center text-sm font-medium text-[#0A0A0A]/70 hover:text-[#E91E8C] mb-4 hidden">← Back</a>
+
+          <div id="loadingState" class="hidden text-center py-16">
+            <div class="mx-auto w-14 h-14 rounded-full border-4 border-[#F8B4D9] border-t-[#E91E8C] loading-ring"></div>
+            <p class="mt-5 font-heading text-4xl text-[#0A0A0A]">Building your recommendation...</p>
+            <p class="mt-2 text-[#0A0A0A]/70">Creating your luxury SmartSite match ✦</p>
+          </div>
+
+          <form id="surveyForm" class="survey-form" novalidate>
+            <!-- ============================================================================ -->
+            <!-- STEP 1: BUSINESS TYPE                                                        -->
+            <!-- ============================================================================ -->
+            <section data-step="1" class="slide-step active">
+              <h2 class="font-heading text-4xl md:text-5xl text-[#0A0A0A] leading-none">What type of beauty business do you run?</h2>
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button type="button" class="tile-btn group relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Makeup Artist" data-field="businessType"><span class="text-2xl">💄</span><span class="ml-3 font-semibold text-lg">Makeup Artist</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn group relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Hair Stylist" data-field="businessType"><span class="text-2xl">💇</span><span class="ml-3 font-semibold text-lg">Hair Stylist</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn group relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Nail Tech" data-field="businessType"><span class="text-2xl">💅</span><span class="ml-3 font-semibold text-lg">Nail Tech</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn group relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Lash Artist" data-field="businessType"><span class="text-2xl">👁️</span><span class="ml-3 font-semibold text-lg">Lash Artist</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn group relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Bridal Team" data-field="businessType"><span class="text-2xl">💍</span><span class="ml-3 font-semibold text-lg">Bridal Team</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn group relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Other" data-field="businessType"><span class="text-2xl">✨</span><span class="ml-3 font-semibold text-lg">Other</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+              </div>
+              <button type="button" id="next1" class="step-btn mt-6 w-full rounded-2xl bg-[#E91E8C] text-white py-4 font-bold text-lg disabled:bg-[#0A0A0A]/20 disabled:text-white/60" disabled>Next →</button>
+            </section>
+
+            <!-- ============================================================================ -->
+            <!-- STEP 2: CURRENT BOOKING METHOD                                               -->
+            <!-- ============================================================================ -->
+            <section data-step="2" class="slide-step">
+              <h2 class="font-heading text-4xl md:text-5xl text-[#0A0A0A] leading-none">How are you currently booking clients?</h2>
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="DM Only" data-field="bookingMethod"><span class="text-2xl">📱</span><span class="ml-3 font-semibold text-lg">DM Only</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Link in Bio" data-field="bookingMethod"><span class="text-2xl">🔗</span><span class="ml-3 font-semibold text-lg">Link in Bio</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Book by Email" data-field="bookingMethod"><span class="text-2xl">📧</span><span class="ml-3 font-semibold text-lg">Book by Email</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="GlossGenius" data-field="bookingMethod"><span class="text-2xl">💻</span><span class="ml-3 font-semibold text-lg">GlossGenius</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4 sm:col-span-2" data-value="I don't have a real system" data-field="bookingMethod"><span class="text-2xl">🤷</span><span class="ml-3 font-semibold text-lg">I don't have a real system</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+              </div>
+              <button type="button" id="next2" class="step-btn mt-6 w-full rounded-2xl bg-[#E91E8C] text-white py-4 font-bold text-lg disabled:bg-[#0A0A0A]/20 disabled:text-white/60" disabled>Next →</button>
+            </section>
+
+            <!-- ============================================================================ -->
+            <!-- STEP 3: BOOKING FRUSTRATIONS                                                  -->
+            <!-- ============================================================================ -->
+            <section data-step="3" class="slide-step">
+              <h2 class="font-heading text-4xl md:text-5xl text-[#0A0A0A] leading-none">What's your biggest booking frustration right now?</h2>
+              <p class="mt-3 text-[#0A0A0A]/70">Choose one or more. We'll tailor your recommendation to the real pain points.</p>
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Slow Responses" data-field="frustrations"><span class="text-2xl">⏳</span><span class="ml-3 font-semibold text-lg">Slow Responses</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Losing Inquiries" data-field="frustrations"><span class="text-2xl">👻</span><span class="ml-3 font-semibold text-lg">Losing Inquiries</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Too Much Admin" data-field="frustrations"><span class="text-2xl">📋</span><span class="ml-3 font-semibold text-lg">Too Much Admin</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="Clients Ghosting" data-field="frustrations"><span class="text-2xl">🚫</span><span class="ml-3 font-semibold text-lg">Clients Ghosting</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4 sm:col-span-2" data-value="Overwhelmed By It All" data-field="frustrations"><span class="text-2xl">😩</span><span class="ml-3 font-semibold text-lg">Overwhelmed By It All</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+              </div>
+              <button type="button" id="next3" class="step-btn mt-6 w-full rounded-2xl bg-[#E91E8C] text-white py-4 font-bold text-lg">Next →</button>
+            </section>
+
+            <!-- ============================================================================ -->
+            <!-- STEP 4: MONTHLY BOOKINGS                                                     -->
+            <!-- ============================================================================ -->
+            <section data-step="4" class="slide-step">
+              <h2 class="font-heading text-4xl md:text-5xl text-[#0A0A0A] leading-none">How many bookings do you average per month?</h2>
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="0–5 bookings" data-field="bookingsPerMonth"><span class="text-2xl">1</span><span class="ml-3 font-semibold text-lg">0–5 bookings</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="5–10 bookings" data-field="bookingsPerMonth"><span class="text-2xl">2</span><span class="ml-3 font-semibold text-lg">5–10 bookings</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="10–20 bookings" data-field="bookingsPerMonth"><span class="text-2xl">3</span><span class="ml-3 font-semibold text-lg">10–20 bookings</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+                <button type="button" class="tile-btn relative w-full text-left rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4" data-value="20+ bookings" data-field="bookingsPerMonth"><span class="text-2xl">4</span><span class="ml-3 font-semibold text-lg">20+ bookings</span><span class="checkmark absolute top-4 right-4">✦</span></button>
+              </div>
+              <button type="button" id="next4" class="step-btn mt-6 w-full rounded-2xl bg-[#E91E8C] text-white py-4 font-bold text-lg disabled:bg-[#0A0A0A]/20 disabled:text-white/60" disabled>Next →</button>
+            </section>
+
+            <!-- ============================================================================ -->
+            <!-- STEP 5: CONTACT CAPTURE                                                      -->
+            <!-- ============================================================================ -->
+            <section data-step="5" class="slide-step">
+              <h2 class="font-heading text-4xl md:text-5xl text-[#0A0A0A] leading-none">Almost done! Where should we send your results?</h2>
+              <p class="mt-3 text-[#0A0A0A]/70">Enter your info below to unlock your personalized SmartSite recommendation + a free demo video.</p>
+
+              <div class="mt-6 space-y-4">
+                <label class="block">
+                  <span class="block text-sm font-semibold mb-2 text-[#0A0A0A]">Full Name</span>
+                  <input id="fullName" type="text" placeholder="Your full name" class="w-full rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4 outline-none focus:border-[#E91E8C] focus:ring-4 focus:ring-[#F8B4D9]/40 transition" />
+                </label>
+                <label class="block">
+                  <span class="block text-sm font-semibold mb-2 text-[#0A0A0A]">Email Address</span>
+                  <input id="emailAddress" type="email" placeholder="your@email.com" class="w-full rounded-2xl border border-[#0A0A0A]/15 bg-white px-5 py-4 outline-none focus:border-[#E91E8C] focus:ring-4 focus:ring-[#F8B4D9]/40 transition" />
+                </label>
+              </div>
+
+              <button type="submit" class="step-btn mt-6 w-full rounded-2xl bg-[#E91E8C] text-white py-4 font-bold text-lg hover:bg-[#d8157d] transition">Show Me My SmartSite ✦</button>
+              <p class="mt-3 text-center text-sm text-[#0A0A0A]/60">🔒 No spam, ever. Just your results.</p>
+            </section>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================================================ -->
+  <!-- FOOTER SECTION: Minimal branded footer                                      -->
+  <!-- Features: High contrast black footer with light brand copy                  -->
+  <!-- Mobile Padding: px-4 md:px-6 keeps footer text readable                    -->
+  <!-- ============================================================================ -->
+  <footer class="bg-[#0A0A0A] text-white">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
+      <p>© 2026 BFF Marketing</p>
+      <p class="text-white/70">bff.marketing</p>
+    </div>
+  </footer>
+
+  
+  <script src="script.js"></script>
+</body>
+</html>
