@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+
+<!-- SEO Meta Tags -->
+<title>BFF Marketing Beauty Business Systems | Watch the Demo &amp; Buy</title>
+<meta name="description" content="High-converting mini sales landing page for beauty pros featuring a demo video, revealed pricing, and conversion-focused offers from BFF Marketing." />
+<meta property="og:title" content="BFF Marketing Beauty Business Systems | Watch the Demo &amp; Buy" />
+<meta property="og:description" content="High-converting mini sales landing page for beauty pros featuring a demo video, revealed pricing, and conversion-focused offers from BFF Marketing." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="BFF Marketing Beauty Business Systems | Watch the Demo &amp; Buy" />
+<meta name="twitter:description" content="High-converting mini sales landing page for beauty pros featuring a demo video, revealed pricing, and conversion-focused offers from BFF Marketing." />
+<!-- End SEO Meta Tags -->
+
+<script data-gate>
+(function(){
+  var slug='pdYB8WVW';var apiBase='https://paymegpt.com';var currency='USD';var presets=[2500,5000,10000,25000];var minAmt=100;var maxAmt=1000000;var thankYouMsg='Thank you for your generous donation!';
+  function fmtD(c){return new Intl.NumberFormat('en-US',{style:'currency',currency:currency}).format(c/100);}
+  window.__processDonation=function(amountCents,email,donorName,donorMessage){
+    if(!amountCents||amountCents<minAmt){alert('Minimum donation is '+fmtD(minAmt));return Promise.reject('below_min');}
+    if(amountCents>maxAmt){alert('Maximum donation is '+fmtD(maxAmt));return Promise.reject('above_max');}
+    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
+    var successBase=window.location.href.split('?')[0];
+    return fetch(apiBase+'/api/landing-pages/public/'+slug+'/donation/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:donorName||'',amountCents:amountCents,message:donorMessage||'',successUrl:successBase+'?donation=success&email='+encodeURIComponent(email)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?donation=cancelled'})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
+      else{alert(d.error||'Failed to process donation');throw new Error(d.error);}
+    });
+  };
+  window.__donationConfig={currency:currency,presets:presets,minAmount:minAmt,maxAmount:maxAmt,formatAmount:fmtD};
+  document.addEventListener('DOMContentLoaded',function(){
+    var urlParams=new URLSearchParams(window.location.search);
+    if(urlParams.get('donation')==='success'){
+      var overlay=document.createElement('div');overlay.id='donation-success-overlay';
+      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">'+thankYouMsg+'</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Your donation has been processed successfully.</p><button onclick="this.closest(\'#donation-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      document.body.appendChild(overlay);
+    }
+  });
+})();
+</script>
+<script data-field-replace>
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var fields={};
+  var paramMap={
+    'first_name':'firstName','last_name':'lastName','full_name':'fullName',
+    'email':'email','phone':'phone','company':'company',
+    'city':'city','state':'state','country':'country'
+  };
+  var skipTags={'SCRIPT':1,'STYLE':1,'NOSCRIPT':1,'TEXTAREA':1,'CODE':1,'PRE':1};
+  var hasUrlFields=false;
+  for(var p in paramMap){
+    var v=params.get(p);
+    if(v){fields[paramMap[p]]=v;hasUrlFields=true;}
+  }
+  var contactId=params.get('contact_id');
+  function esc(s){
+    if(!s)return s;
+    var d=document.createElement('div');
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+  function doReplace(data){
+    var r={};
+    r['{{full_name}}']=esc(((data.firstName||'')+' '+(data.lastName||'')).trim()||((data.fullName||data.name)||''));
+    r['{{first_name}}']=esc(data.firstName||(data.name?data.name.split(' ')[0]:'')||'');
+    r['{{last_name}}']=esc(data.lastName||(data.name&&data.name.indexOf(' ')>-1?data.name.substring(data.name.indexOf(' ')+1):'')||'');
+    r['{{email}}']=esc(data.email||'');
+    r['{{phone}}']=esc(data.phone||'');
+    r['{{company}}']=esc(data.company||'');
+    r['{{city}}']=esc(data.city||'');
+    r['{{state}}']=esc(data.state||'');
+    r['{{country}}']=esc(data.country||'');
+    r['{{date}}']=new Date().toLocaleDateString();
+    r['{{time}}']=new Date().toLocaleTimeString();
+    r['{{location}}']=[data.city,data.state,data.country].filter(Boolean).join(', ');
+    r['{{tracking_id}}']=esc(data.trackingId||'');
+    r['{{lastClickedProduct}}']=esc(data.lastClickedProduct||'');
+    r['{{lastProductClickDate}}']=esc(data.lastProductClickDate||'');
+    r['{{lastClickedProductPrice}}']=esc(data.lastClickedProductPrice||'');
+    r['{{lastClickedProductURL}}']=esc(data.lastClickedProductURL||'');
+    r['{{productsClickedCount}}']=esc(data.productsClickedCount||'0');
+    r['{{ip_address}}']=esc(data.ipAddress||'');
+    r['{{ip}}']=esc(data.ipAddress||'');
+    if(data.customFields){
+      for(var k in data.customFields){
+        r['{{'+k+'}}']=esc(String(data.customFields[k]||''));
+      }
+    }
+    params.forEach(function(v,k){
+      if(!paramMap[k]&&k!=='contact_id'&&k!=='page_id'&&k.indexOf('utm_')!==0){
+        r['{{'+k+'}}']=esc(v);
+      }
+    });
+    var hasValues=false;
+    for(var key in r){if(r[key]){hasValues=true;break;}}
+    if(!hasValues)return;
+    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+      acceptNode:function(n){
+        var p=n.parentNode;
+        if(p&&skipTags[p.nodeName])return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var node;
+    while(node=walker.nextNode()){
+      var txt=node.nodeValue;
+      if(txt&&txt.indexOf('{{')>-1){
+        var changed=txt;
+        for(var ph in r){
+          if(r[ph]&&changed.indexOf(ph)>-1){
+            changed=changed.split(ph).join(r[ph]);
+          }
+        }
+        if(changed!==txt)node.nodeValue=changed;
+      }
+    }
+    var attrs=['value','placeholder','content','alt','title'];
+    attrs.forEach(function(attr){
+      var els=document.querySelectorAll('['+attr+'*="{{"]');
+      for(var i=0;i<els.length;i++){
+        var tag=els[i].tagName;
+        if(skipTags[tag])continue;
+        var val=els[i].getAttribute(attr);
+        if(val){
+          var nv=val;
+          for(var ph in r){
+            if(r[ph]&&nv.indexOf(ph)>-1){
+              nv=nv.split(ph).join(r[ph]);
+            }
+          }
+          if(nv!==val)els[i].setAttribute(attr,nv);
+        }
+      }
+    });
+  }
+  function run(){
+    if(contactId){
+      var xhr=new XMLHttpRequest();
+      xhr.open('GET','https://paymegpt.com/api/landing/context/'+encodeURIComponent(contactId)+'?page_id=2543');
+      xhr.onload=function(){
+        if(xhr.status===200){
+          try{
+            var resp=JSON.parse(xhr.responseText);
+            if(resp.success&&resp.contact){
+              var merged=resp.contact;
+              for(var k in fields){merged[k]=fields[k];}
+              doReplace(merged);
+              return;
+            }
+          }catch(e){}
+        }
+        if(hasUrlFields)doReplace(fields);
+      };
+      xhr.onerror=function(){if(hasUrlFields)doReplace(fields);};
+      xhr.send();
+    }else if(hasUrlFields){
+      doReplace(fields);
+    }
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}
+  else{run();}
+})();
+</script>
+<script data-payment>
+(function(){
+  var slug='pdYB8WVW';
+  var apiBase='https://paymegpt.com';
+  function findEmail(){
+    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}
+    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}
+    return '';
+  }
+  function findName(){
+    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}
+    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}
+    return '';
+  }
+  var __realProcessPayment=function(a,b,c,d,e){
+    var amountCents,email,productName,productDescription,customerName,quantity;
+    if(a&&typeof a==='object'){
+      amountCents=a.amountCents;email=a.email;productName=a.productName;
+      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;
+    }else{
+      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';
+      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;
+    }
+    if(!email)email=findEmail();
+    if(!customerName)customerName=findName();
+    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}
+    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}
+    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
+    var successBase=window.location.href.split('?')[0];
+    return fetch(apiBase+'/api/landing-pages/public/'+slug+'/payment/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
+      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}
+    });
+  };
+  Object.defineProperty(window,'__processPayment',{value:__realProcessPayment,writable:false,configurable:false});
+  document.addEventListener('DOMContentLoaded',function(){
+    var urlParams=new URLSearchParams(window.location.search);
+    if(urlParams.get('payment')==='success'){
+      var pName=urlParams.get('product')||'your item';
+      var overlay=document.createElement('div');overlay.id='payment-success-overlay';
+      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      document.body.appendChild(overlay);
+    }
+  });
+})();
+</script>  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#0A0A0A] text-white antialiased">
+  <!-- ============================================================================ -->
+  <!-- STICKY NAV: Minimal black top bar with hot pink BFF logo                    -->
+  <!-- Mobile Padding: Ensures logo never touches viewport edges                  -->
+  <!-- ============================================================================ -->
+  <header class="sticky top-0 z-50 bg-[#0A0A0A]/95 backdrop-blur border-b border-white/10" data-section="sticky-nav">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12 py-4 flex items-center justify-between">
+      <a href="#top" class="font-heading text-3xl sm:text-4xl tracking-wide text-[#E91E8C] no-underline" aria-label="BFF Marketing home">bff✦</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ============================================================================ -->
+    <!-- ABOVE VIDEO HOOK: Tight, emotional intro with sparkle accents              -->
+    <!-- Features: Gradient background, centered headline, animated entry          -->
+    <!-- Mobile Padding: Safe spacing on small screens                              -->
+    <!-- ============================================================================ -->
+    <section class="bg-gradient-to-b from-[#F8B4D9] via-white to-white text-center" data-section="video-hook">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-14 md:py-16 fade-in-up">
+        <div class="flex items-center justify-center gap-3 text-[#E91E8C] mb-3 text-xl sm:text-2xl">
+          <span>✦</span><span>✦</span><span>✦</span>
+        </div>
+        <h1 class="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.9] text-black max-w-4xl mx-auto">
+          HERE'S EXACTLY WHAT YOUR BEAUTY BUSINESS COULD LOOK LIKE.
+        </h1>
+        <p class="mt-5 text-base sm:text-lg md:text-xl text-[#202020] max-w-3xl mx-auto leading-relaxed">
+          Watch how real makeup artists are booking brides, collecting deposits, and eliminating admin — all on autopilot.
+        </p>
+        <div class="flex items-center justify-center gap-3 text-[#E91E8C] mt-4 text-xl sm:text-2xl">
+          <span>✦</span><span>✦</span><span>✦</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- VIDEO SECTION: Primary conversion centerpiece with hot pink glow          -->
+    <!-- Features: Black background, centered video, subtle nudge label            -->
+    <!-- Mobile Padding: Full-width friendly with safe spacing                     -->
+    <!-- ============================================================================ -->
+    <section class="bg-[#0A0A0A] py-8 sm:py-10 md:py-12" data-section="video-player">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 md:px-8 lg:px-12">
+        <div class="max-w-[860px] mx-auto slide-in-from-bottom">
+          <p class="text-[#F8B4D9] italic text-sm sm:text-base mb-3 text-center">▶ Press play to see it in action</p>
+          <div class="rounded-2xl overflow-hidden" style="box-shadow: 0 0 0 3px #E91E8C, 0 20px 60px rgba(233,30,140,0.3);">
+            <video id="salesVideo" class="w-full h-auto block bg-black" controls preload="metadata" playsinline>
+              <source src="https://assets.cdn.filesafe.space/M6UyEWjz5b9Ff1AAV7Bh/media/69950a626bac249d7e23bc10.mov" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- PRICING SECTION: Hidden until video reaches 60s or ends                   -->
+    <!-- Features: Three offer cards with staggered reveal animation                -->
+    <!-- Mobile Padding: Responsive stacked cards with readable typography         -->
+    <!-- ============================================================================ -->
+    <section id="pricingSection" class="pricing-hidden bg-white text-black py-12 sm:py-14 md:py-16" data-section="pricing">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12">
+        <div class="text-center max-w-4xl mx-auto">
+          <p class="font-heading text-3xl sm:text-4xl text-[#E91E8C]">YOU WATCHED IT. NOW YOU KNOW.</p>
+          <h2 class="font-heading text-5xl sm:text-6xl md:text-7xl leading-[0.92] mt-2">
+            READY TO SET THIS UP IN YOUR BUSINESS?
+          </h2>
+          <p class="mt-4 text-base sm:text-lg md:text-xl text-[#202020]">
+            No tech skills needed. Done-for-you setup. No contracts, cancel anytime.
+          </p>
+        </div>
+
+        <div class="mt-8 grid gap-5 lg:grid-cols-3 items-stretch">
+          <!-- CARD 1 -->
+          <article class="card-enter rounded-3xl bg-white border-t-4 border-[#E91E8C] shadow-[0_10px_30px_rgba(0,0,0,0.08)] p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(233,30,140,0.22)] transition-all duration-300" data-card="smartsite">
+            <div>
+              <h3 class="font-heading text-4xl text-black">BFF SMARTSITE</h3>
+              <p class="mt-1 text-lg font-bold text-[#E91E8C]">$250 setup + $47/month</p>
+              <p class="mt-3 text-sm sm:text-base text-[#202020] font-medium">For: Nail techs, lash techs, hair stylists, non-bridal MUAs</p>
+              <ul class="mt-5 space-y-2 text-sm sm:text-base text-[#202020]">
+                <li>✦ Custom mobile SmartSite</li>
+                <li>✦ Link-in-bio replacement</li>
+                <li>✦ Contracts & inquiry form</li>
+                <li>✦ Services calendar with deposit</li>
+                <li>✦ Booked & Paid Pipeline</li>
+                <li>✦ Automated reminders</li>
+                <li>✦ CRM setup</li>
+                <li>✦ Done-for-you setup</li>
+              </ul>
+            </div>
+            <a href="https://bff.marketing/demo-survey" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#E91E8C] px-5 py-4 text-white font-bold pulse-on-hover transition-all duration-300 no-underline">Get Started</a>
+          </article>
+
+          <!-- CARD 2 FEATURED -->
+          <article class="card-enter rounded-3xl bg-[#E91E8C] border-t-4 border-[#E91E8C] shadow-[0_10px_30px_rgba(233,30,140,0.22)] p-6 sm:p-7 flex flex-col justify-between lg:scale-[1.03] hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(233,30,140,0.34)] transition-all duration-300" data-card="bridal">
+            <div>
+              <div class="flex justify-center">
+                <span class="inline-flex rounded-full bg-white text-[#E91E8C] px-4 py-1 text-xs font-extrabold tracking-[0.2em]">MOST POPULAR</span>
+              </div>
+              <h3 class="font-heading text-4xl text-white mt-3">BRIDAL BIZ SYSTEM</h3>
+              <p class="mt-1 text-lg font-bold text-white/95">$500 setup + $97/month</p>
+              <p class="mt-3 text-sm sm:text-base text-white/90 font-medium">For: Bridal MUAs & higher-end beauty services</p>
+              <ul class="mt-5 space-y-2 text-sm sm:text-base text-white">
+                <li>✦ Everything in BFF SmartSite PLUS:</li>
+                <li>✦ Mobile + desktop SmartSite</li>
+                <li>✦ The iDo Pipeline™ (full bridal flow)</li>
+                <li>✦ AI website chat widget</li>
+                <li>✦ Advanced workflows</li>
+                <li>✦ Full CRM pipeline</li>
+                <li>✦ Priority onboarding</li>
+              </ul>
+            </div>
+            <a href="https://bff.marketing/demo-survey" class="mt-6 inline-flex items-center justify-center rounded-full bg-white px-5 py-4 text-[#E91E8C] font-bold border border-white pulse-on-hover transition-all duration-300 no-underline">Get Started</a>
+          </article>
+
+          <!-- CARD 3 -->
+          <article class="card-enter rounded-3xl bg-white border-t-4 border-[#E91E8C] shadow-[0_10px_30px_rgba(0,0,0,0.08)] p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(233,30,140,0.22)] transition-all duration-300" data-card="studio">
+            <div>
+              <h3 class="font-heading text-4xl text-black">STUDIO & TEAM SUITE</h3>
+              <p class="mt-1 text-lg font-bold text-[#E91E8C]">Starting at $2,500 setup + $197/month</p>
+              <p class="mt-3 text-sm sm:text-base text-[#202020] font-medium">For: Salons, bridal teams, studios & educators</p>
+              <ul class="mt-5 space-y-2 text-sm sm:text-base text-[#202020]">
+                <li>✦ Everything in Bridal Biz System PLUS:</li>
+                <li>✦ AI Phone Agent</li>
+                <li>✦ Custom automations</li>
+                <li>✦ Team scheduling & calendars</li>
+                <li>✦ Community Builder</li>
+                <li>✦ Referral + Review Automations</li>
+                <li>✦ Affiliate System</li>
+                <li>✦ Priority support</li>
+                <li>✦ Quarterly optimization</li>
+              </ul>
+            </div>
+            <a href="https://bff.marketing/demo-survey" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#E91E8C] px-5 py-4 text-white font-bold pulse-on-hover transition-all duration-300 no-underline">Get Started</a>
+          </article>
+        </div>
+
+        <p class="text-center mt-5 text-sm sm:text-base text-[#202020] font-medium">🔒 No contracts. Cancel anytime. Done-for-you setup included.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- URGENCY CLOSER: Reinforces action after pricing is revealed                -->
+    <!-- Features: Black background, single CTA, simple emotional close            -->
+    <!-- Mobile Padding: Centered and readable on small screens                    -->
+    <!-- ============================================================================ -->
+    <section id="urgencySection" class="pricing-hidden bg-[#0A0A0A] py-12 sm:py-14 md:py-16" data-section="urgency">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 md:px-8 lg:px-12 text-center">
+        <h2 class="font-heading text-5xl sm:text-6xl md:text-7xl text-[#E91E8C] leading-[0.92]">
+          YOUR NEXT BRIDE IS ALREADY SEARCHING.
+        </h2>
+        <p class="mt-4 text-base sm:text-lg md:text-xl text-white/95 max-w-2xl mx-auto">
+          Every day without an automated system is another inquiry you might miss. Let's fix that today.
+        </p>
+        <a href="https://bff.marketing/demo-survey" class="mt-8 inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-[#E91E8C] px-8 py-4 text-white font-extrabold tracking-wide text-base sm:text-lg pulse-on-hover transition-all duration-300 no-underline">
+          BOOK YOUR FREE DEMO NOW ✦
+        </a>
+        <p class="mt-4 text-sm sm:text-base text-[#F8B4D9]">Free setup consultation. No pressure. Just results.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================================ -->
+  <!-- FOOTER: Minimal black footer with brand and legal links                     -->
+  <!-- Features: Clean branding and essential links only                          -->
+  <!-- Mobile Padding: Prevents edge clipping on small screens                    -->
+  <!-- ============================================================================ -->
+  <footer class="bg-[#0A0A0A] border-t border-white/10 py-8" data-section="footer">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm sm:text-base">
+      <div class="flex items-center gap-3">
+        <span class="font-heading text-3xl text-[#E91E8C]">bff✦</span>
+      </div>
+      <div class="text-white/75 text-center sm:text-right">
+        © 2025 BFF Marketing. All rights reserved.
+      </div>
+      <div class="flex items-center gap-4 text-white/75">
+        <a href="#" class="hover:text-[#F8B4D9] transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-[#F8B4D9] transition-colors">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://paymegpt.com/widget.js" data-widget="66300591" async></script>
+  
+  <script src="script.js"></script>
+</body>
+</html>
