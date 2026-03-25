@@ -27,17 +27,25 @@
       0%,100%{transform:translateY(0) scale(1); box-shadow:0 10px 30px rgba(233,30,140,.22);}
       50%{transform:translateY(-1px) scale(1.01); box-shadow:0 14px 36px rgba(233,30,140,.34);}
     }
-    .pricing-hidden{
-      opacity:0;
-      transform:translateY(40px);
-      pointer-events:none;
-      transition:opacity .8s ease, transform .8s ease;
+    
+    /* MODIFIED HIDING LOGIC: ZERO LAYOUT SPACE */
+    .pricing-hidden {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      pointer-events: none;
+      transition: max-height 1.2s ease, opacity 0.8s ease, padding 0.8s ease;
     }
-    .pricing-visible{
-      opacity:1;
-      transform:translateY(0);
-      pointer-events:auto;
+    .pricing-revealed {
+      max-height: 3000px; /* large enough to fit all content */
+      opacity: 1;
+      pointer-events: auto;
+      transition: max-height 1.2s ease, opacity 0.8s ease, padding 0.8s ease;
     }
+
     .card-enter{
       opacity:0;
       transform:translateY(22px);
