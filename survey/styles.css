@@ -1,0 +1,24 @@
+/* ===== GLOBAL BASE STYLES ===== */
+    body { font-family: 'DM Sans', sans-serif; background: #fff; color: #0A0A0A; }
+    .font-heading { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; }
+    .sparkle { color: #E91E8C; text-shadow: 0 0 18px rgba(233,30,140,.22); }
+    .survey-card { box-shadow: 0 20px 60px rgba(10,10,10,.10); }
+    .slide-step { display: none; opacity: 0; transform: translateX(16px); }
+    .slide-step.active { display: block; animation: fadeSlide .42s ease forwards; }
+    .step-btn, .tile-btn { transition: all .25s ease; }
+    .tile-btn:hover { transform: translateY(-2px); border-color: #F8B4D9; }
+    .tile-btn.selected { background: #E91E8C; color: #fff; border-color: #E91E8C; transform: scale(1.02); }
+    .tile-btn.selected .checkmark { opacity: 1; transform: scale(1); }
+    .checkmark { opacity: 0; transform: scale(.7); transition: all .2s ease; }
+    .progress-dot { transition: all .3s ease; }
+    .progress-fill { transition: width .45s ease; background: linear-gradient(90deg, #F8B4D9 0%, #E91E8C 100%); }
+    .floating-sparkles span {
+      position: absolute; font-size: 14px; color: rgba(233,30,140,.32); animation: floatSparkle 9s linear infinite;
+      user-select: none; pointer-events: none;
+    }
+    .floating-sparkles span:nth-child(2n) { animation-duration: 11s; }
+    .floating-sparkles span:nth-child(3n) { animation-duration: 13s; }
+    .loading-ring { animation: spin 1s linear infinite; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes floatSparkle { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: .9; } 50% { transform: translateY(-80px) translateX(20px) rotate(180deg); } 100% { transform: translateY(-160px) translateX(-10px) rotate(360deg); opacity: 0; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
