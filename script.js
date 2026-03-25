@@ -81,3 +81,18 @@
   // Re-init on resize in case user rotates device
   window.addEventListener('resize', initFeatureGlow);
 })();
+
+(function() {
+  const scrollEls = document.querySelectorAll('#booked-paid .animate-on-scroll');
+  if (!scrollEls.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 150);
+      }
+    });
+  }, { threshold: 0.15 });
+  scrollEls.forEach(el => obs.observe(el));
+})();
