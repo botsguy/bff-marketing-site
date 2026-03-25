@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  
+
+<!-- SEO Meta Tags -->
+<title>BFF Marketing | Luxury SmartSite &amp; Automated Bridal Booking</title>
+<meta name="description" content="Luxury SmartSite and automated booking system by BFF Marketing for makeup artists and hairstylists, featuring bridal pipelines, AI tools, and elegant conversion design." />
+<meta property="og:title" content="BFF Marketing | Luxury SmartSite &amp; Automated Bridal Booking" />
+<meta property="og:description" content="Luxury SmartSite and automated booking system by BFF Marketing for makeup artists and hairstylists, featuring bridal pipelines, AI tools, and elegant conversion design." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="BFF Marketing | Luxury SmartSite &amp; Automated Bridal Booking" />
+<meta name="twitter:description" content="Luxury SmartSite and automated booking system by BFF Marketing for makeup artists and hairstylists, featuring bridal pipelines, AI tools, and elegant conversion design." />
+<!-- End SEO Meta Tags -->
+
+<script data-gate>
+(function(){
+  var slug='yDNn5hbCQ';var apiBase='https://paymegpt.com';var currency='USD';var presets=[2500,5000,10000,25000];var minAmt=100;var maxAmt=1000000;var thankYouMsg='Thank you for your generous donation!';
+  function fmtD(c){return new Intl.NumberFormat('en-US',{style:'currency',currency:currency}).format(c/100);}
+  window.__processDonation=function(amountCents,email,donorName,donorMessage){
+    if(!amountCents||amountCents<minAmt){alert('Minimum donation is '+fmtD(minAmt));return Promise.reject('below_min');}
+    if(amountCents>maxAmt){alert('Maximum donation is '+fmtD(maxAmt));return Promise.reject('above_max');}
+    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
+    var successBase=window.location.href.split('?')[0];
+    return fetch(apiBase+'/api/landing-pages/public/'+slug+'/donation/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:donorName||'',amountCents:amountCents,message:donorMessage||'',successUrl:successBase+'?donation=success&email='+encodeURIComponent(email)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?donation=cancelled'})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
+      else{alert(d.error||'Failed to process donation');throw new Error(d.error);}
+    });
+  };
+  window.__donationConfig={currency:currency,presets:presets,minAmount:minAmt,maxAmount:maxAmt,formatAmount:fmtD};
+  document.addEventListener('DOMContentLoaded',function(){
+    var urlParams=new URLSearchParams(window.location.search);
+    if(urlParams.get('donation')==='success'){
+      var overlay=document.createElement('div');overlay.id='donation-success-overlay';
+      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">'+thankYouMsg+'</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Your donation has been processed successfully.</p><button onclick="this.closest(\'#donation-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      document.body.appendChild(overlay);
+    }
+  });
+})();
+</script>
+<script data-field-replace>
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var fields={};
+  var paramMap={
+    'first_name':'firstName','last_name':'lastName','full_name':'fullName',
+    'email':'email','phone':'phone','company':'company',
+    'city':'city','state':'state','country':'country'
+  };
+  var skipTags={'SCRIPT':1,'STYLE':1,'NOSCRIPT':1,'TEXTAREA':1,'CODE':1,'PRE':1};
+  var hasUrlFields=false;
+  for(var p in paramMap){
+    var v=params.get(p);
+    if(v){fields[paramMap[p]]=v;hasUrlFields=true;}
+  }
+  var contactId=params.get('contact_id');
+  function esc(s){
+    if(!s)return s;
+    var d=document.createElement('div');
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+  function doReplace(data){
+    var r={};
+    r['{{full_name}}']=esc(((data.firstName||'')+' '+(data.lastName||'')).trim()||((data.fullName||data.name)||''));
+    r['{{first_name}}']=esc(data.firstName||(data.name?data.name.split(' ')[0]:'')||'');
+    r['{{last_name}}']=esc(data.lastName||(data.name&&data.name.indexOf(' ')>-1?data.name.substring(data.name.indexOf(' ')+1):'')||'');
+    r['{{email}}']=esc(data.email||'');
+    r['{{phone}}']=esc(data.phone||'');
+    r['{{company}}']=esc(data.company||'');
+    r['{{city}}']=esc(data.city||'');
+    r['{{state}}']=esc(data.state||'');
+    r['{{country}}']=esc(data.country||'');
+    r['{{date}}']=new Date().toLocaleDateString();
+    r['{{time}}']=new Date().toLocaleTimeString();
+    r['{{location}}']=[data.city,data.state,data.country].filter(Boolean).join(', ');
+    r['{{tracking_id}}']=esc(data.trackingId||'');
+    r['{{lastClickedProduct}}']=esc(data.lastClickedProduct||'');
+    r['{{lastProductClickDate}}']=esc(data.lastProductClickDate||'');
+    r['{{lastClickedProductPrice}}']=esc(data.lastClickedProductPrice||'');
+    r['{{lastClickedProductURL}}']=esc(data.lastClickedProductURL||'');
+    r['{{productsClickedCount}}']=esc(data.productsClickedCount||'0');
+    r['{{ip_address}}']=esc(data.ipAddress||'');
+    r['{{ip}}']=esc(data.ipAddress||'');
+    if(data.customFields){
+      for(var k in data.customFields){
+        r['{{'+k+'}}']=esc(String(data.customFields[k]||''));
+      }
+    }
+    params.forEach(function(v,k){
+      if(!paramMap[k]&&k!=='contact_id'&&k!=='page_id'&&k.indexOf('utm_')!==0){
+        r['{{'+k+'}}']=esc(v);
+      }
+    });
+    var hasValues=false;
+    for(var key in r){if(r[key]){hasValues=true;break;}}
+    if(!hasValues)return;
+    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+      acceptNode:function(n){
+        var p=n.parentNode;
+        if(p&&skipTags[p.nodeName])return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var node;
+    while(node=walker.nextNode()){
+      var txt=node.nodeValue;
+      if(txt&&txt.indexOf('{{')>-1){
+        var changed=txt;
+        for(var ph in r){
+          if(r[ph]&&changed.indexOf(ph)>-1){
+            changed=changed.split(ph).join(r[ph]);
+          }
+        }
+        if(changed!==txt)node.nodeValue=changed;
+      }
+    }
+    var attrs=['value','placeholder','content','alt','title'];
+    attrs.forEach(function(attr){
+      var els=document.querySelectorAll('['+attr+'*="{{"]');
+      for(var i=0;i<els.length;i++){
+        var tag=els[i].tagName;
+        if(skipTags[tag])continue;
+        var val=els[i].getAttribute(attr);
+        if(val){
+          var nv=val;
+          for(var ph in r){
+            if(r[ph]&&nv.indexOf(ph)>-1){
+              nv=nv.split(ph).join(r[ph]);
+            }
+          }
+          if(nv!==val)els[i].setAttribute(attr,nv);
+        }
+      }
+    });
+  }
+  function run(){
+    if(contactId){
+      var xhr=new XMLHttpRequest();
+      xhr.open('GET','https://paymegpt.com/api/landing/context/'+encodeURIComponent(contactId)+'?page_id=2540');
+      xhr.onload=function(){
+        if(xhr.status===200){
+          try{
+            var resp=JSON.parse(xhr.responseText);
+            if(resp.success&&resp.contact){
+              var merged=resp.contact;
+              for(var k in fields){merged[k]=fields[k];}
+              doReplace(merged);
+              return;
+            }
+          }catch(e){}
+        }
+        if(hasUrlFields)doReplace(fields);
+      };
+      xhr.onerror=function(){if(hasUrlFields)doReplace(fields);};
+      xhr.send();
+    }else if(hasUrlFields){
+      doReplace(fields);
+    }
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}
+  else{run();}
+})();
+</script>
+<script data-payment>
+(function(){
+  var slug='yDNn5hbCQ';
+  var apiBase='https://paymegpt.com';
+  function findEmail(){
+    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}
+    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}
+    return '';
+  }
+  function findName(){
+    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}
+    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}
+    return '';
+  }
+  var __realProcessPayment=function(a,b,c,d,e){
+    var amountCents,email,productName,productDescription,customerName,quantity;
+    if(a&&typeof a==='object'){
+      amountCents=a.amountCents;email=a.email;productName=a.productName;
+      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;
+    }else{
+      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';
+      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;
+    }
+    if(!email)email=findEmail();
+    if(!customerName)customerName=findName();
+    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}
+    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}
+    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
+    var successBase=window.location.href.split('?')[0];
+    return fetch(apiBase+'/api/landing-pages/public/'+slug+'/payment/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
+      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}
+    });
+  };
+  Object.defineProperty(window,'__processPayment',{value:__realProcessPayment,writable:false,configurable:false});
+  document.addEventListener('DOMContentLoaded',function(){
+    var urlParams=new URLSearchParams(window.location.search);
+    if(urlParams.get('payment')==='success'){
+      var pName=urlParams.get('product')||'your item';
+      var overlay=document.createElement('div');overlay.id='payment-success-overlay';
+      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      document.body.appendChild(overlay);
+    }
+  });
+})();
+</script>  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="antialiased">
+  <!-- ============================================================================ -->
+  <!-- HEADER / NAVIGATION: Brand, anchor links, and primary demo CTA             -->
+  <!-- Mobile Padding: p-4 to ensure safe spacing on all devices                  -->
+  <!-- ============================================================================ -->
+  <header data-section="header" class="sticky top-0 z-50 border-b border-[#eadfd8]/80 bg-white/80 backdrop-blur">
+    <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-12">
+      <div class="flex items-center justify-between gap-4">
+        <a href="#hero" class="flex items-center gap-3">
+          <div class="flex h-11 w-11 items-center justify-center rounded-full bg-[#2f2b2c] text-sm font-bold text-white">BFF</div>
+          <div>
+            <p class="serif text-xl leading-none font-semibold tracking-wide">BFF Marketing</p>
+            <p class="text-xs uppercase tracking-[0.22em] text-[#8c7a7d]">SmartSite • Bridal Automation</p>
+          </div>
+        </a>
+        <nav class="hidden items-center gap-6 md:flex text-sm font-medium text-[#5f5658]">
+          <a href="#pain-points" class="hover:text-[#2f2b2c]">Pain Points</a>
+          <a href="#features" class="hover:text-[#2f2b2c]">Features</a>
+          <a href="#pipeline" class="hover:text-[#2f2b2c]">I Do Pipeline</a>
+          <a href="#pricing" class="hover:text-[#2f2b2c]">Pricing</a>
+        </nav>
+        <a href="https://bff.marketing/demo-survey" class="inline-flex items-center justify-center rounded-full bg-[#2f2b2c] px-5 py-3 text-sm font-semibold text-white transition hover:bg-black">Book a Demo</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============================================================================ -->
+    <!-- HERO SECTION: Luxury headline, phone mockup, and demo CTA                  -->
+    <!-- Mobile Padding: px-4 py-8 to keep headings safely within viewport edges    -->
+    <!-- ============================================================================ -->
+    <section id="hero" data-section="hero" class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(244,215,217,.9),transparent_35%),radial-gradient(circle_at_top_right,rgba(215,161,168,.28),transparent_28%),linear-gradient(180deg,#fff,rgba(250,245,239,.92))]"></div>
+      <div class="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-16 lg:px-12">
+        <div class="grid items-center gap-12 lg:grid-cols-2">
+          <div class="max-w-2xl">
+            <p class="mb-4 inline-flex rounded-full border border-[#e8d6d7] bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#7d676d]">Luxury SmartSite for MUAs & Hairstylists</p>
+            <h1 class="serif text-5xl leading-[0.95] font-semibold tracking-tight text-[#2f2b2c] sm:text-6xl lg:text-7xl">
+              Book more bridal clients
+              <span class="block text-[#a26f78]">without feeling salesy.</span>
+            </h1>
+            <p class="mt-6 max-w-xl text-lg leading-8 text-[#5c5254]">
+              BFF Marketing builds a luxury SmartSite and automated booking system for makeup artists and hairstylists—so your brand looks editorial, your inquiries feel effortless, and your bridal pipeline runs while you create.
+            </p>
+            <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+              <a href="https://bff.marketing/demo-survey" class="inline-flex items-center justify-center rounded-full bg-[#2f2b2c] px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.01] hover:bg-black">See the Demo</a>
+              <a href="#pricing" class="inline-flex items-center justify-center rounded-full border border-[#d8c5c7] bg-white px-7 py-4 text-base font-semibold text-[#2f2b2c] transition hover:bg-[#faf5ef]">View Packages</a>
+            </div>
+            <div class="mt-10 grid gap-4 sm:grid-cols-3">
+              <div class="rounded-2xl border border-[#eadfd8] bg-white/80 p-4 soft-shadow">
+                <p class="text-3xl serif font-semibold text-[#a26f78]">24/7</p>
+                <p class="mt-1 text-sm text-[#63595b]">Lead capture and inquiry flow</p>
+              </div>
+              <div class="rounded-2xl border border-[#eadfd8] bg-white/80 p-4 soft-shadow">
+                <p class="text-3xl serif font-semibold text-[#a26f78]">I Do</p>
+                <p class="mt-1 text-sm text-[#63595b]">Bridal pipeline designed to convert</p>
+              </div>
+              <div class="rounded-2xl border border-[#eadfd8] bg-white/80 p-4 soft-shadow">
+                <p class="text-3xl serif font-semibold text-[#a26f78]">AI</p>
+                <p class="mt-1 text-sm text-[#63595b]">Voice, DM, widget, and phone support</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative mx-auto w-full max-w-xl">
+            <div class="floaty rounded-[2rem] border border-[#eadfd8] bg-white p-3 soft-shadow">
+              <div class="rounded-[1.7rem] bg-[#f7efed] p-4">
+                <div class="flex items-center justify-between px-2 pb-3">
+                  <div class="flex gap-2">
+                    <span class="h-3 w-3 rounded-full bg-[#d8b3b8]"></span>
+                    <span class="h-3 w-3 rounded-full bg-[#ead4c6]"></span>
+                    <span class="h-3 w-3 rounded-full bg-[#2f2b2c]"></span>
+                  </div>
+                  <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#8b7a7d]">SmartSite Preview</p>
+                </div>
+                <div class="grid gap-4 lg:grid-cols-[1.1fr_.9fr]">
+                  <div class="rounded-[1.6rem] bg-white p-5 soft-shadow">
+                    <div class="h-64 rounded-[1.3rem] bg-[linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,.92)),radial-gradient(circle_at_top,rgba(217,161,168,.35),transparent_40%),linear-gradient(135deg,#f1d7d8,#fff1ea)] p-5">
+                      <div class="h-full rounded-[1rem] border border-white/60 bg-white/45 p-4">
+                        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-[#8d7b7e]">Bridal Inquiry</p>
+                        <h3 class="serif mt-3 text-3xl leading-none text-[#2f2b2c]">The first client touchpoint feels like couture.</h3>
+                        <div class="mt-6 space-y-3">
+                          <div class="h-3 w-5/6 rounded-full bg-[#eadfd8]"></div>
+                          <div class="h-3 w-4/6 rounded-full bg-[#eadfd8]"></div>
+                          <div class="h-3 w-3/4 rounded-full bg-[#eadfd8]"></div>
+                        </div>
+                        <div class="mt-6 rounded-2xl bg-[#2f2b2c] px-4 py-3 text-sm font-semibold text-white">Check Availability</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="grid gap-4">
+                    <div class="rounded-[1.5rem] bg-[#fffaf7] p-5 soft-shadow">
+                      <p class="text-xs uppercase tracking-[0.24em] text-[#8b7a7d]">Auto Replies</p>
+                      <p class="mt-2 serif text-3xl text-[#2f2b2c]">Instant, polished, on-brand.</p>
+                    </div>
+                    <div class="rounded-[1.5rem] bg-[#f9f2f0] p-5 soft-shadow">
+                      <p class="text-xs uppercase tracking-[0.24em] text-[#8b7a7d]">Follow-Up</p>
+                      <p class="mt-2 text-sm leading-6 text-[#5f5658]">Nurture every inquiry with reminders, consultation prompts, and bridal next steps.</p>
+                    </div>
+                    <div class="rounded-[1.5rem] bg-[#2f2b2c] p-5 text-white soft-shadow shine">
+                      <p class="text-xs uppercase tracking-[0.24em] text-white/70">Booked</p>
+                      <p class="mt-2 serif text-3xl">Confidently.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="absolute -right-4 bottom-6 hidden rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#2f2b2c] shadow-lg lg:block">Designed for luxury brand perception</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- TICKER SECTION: Repeating value proposition for premium social proof       -->
+    <!-- ============================================================================ -->
+    <section data-section="ticker" class="border-y border-[#eadfd8] bg-[#2f2b2c] py-4 text-white overflow-hidden">
+      <div class="ticker-track flex gap-12 px-4 text-sm font-semibold uppercase tracking-[0.24em]">
+        <span>Luxury SmartSite</span><span>Automated Bridal Pipeline</span><span>AI Voice + DM + Widget + Phone</span><span>Client Experience First</span><span>Luxury SmartSite</span><span>Automated Bridal Pipeline</span><span>AI Voice + DM + Widget + Phone</span><span>Client Experience First</span>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- PAIN POINTS SECTION: Problems that BFF solves for beauty professionals     -->
+    <!-- ============================================================================ -->
+    <section id="pain-points" data-section="pain-points" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-12">
+      <div class="grid gap-10 lg:grid-cols-[.95fr_1.05fr]">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[#a26f78]">Pain Points</p>
+          <h2 class="serif mt-3 text-4xl font-semibold text-[#2f2b2c] sm:text-5xl">When your brand feels beautiful, but your booking process feels messy.</h2>
+          <p class="mt-5 max-w-xl text-lg leading-8 text-[#5f5658]">Your artistry is premium. Your website should be too. BFF Marketing helps you eliminate the friction that costs you bridal inquiries, time, and trust.</p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+            <p class="serif text-2xl text-[#2f2b2c]">Inquiries get lost</p>
+            <p class="mt-3 text-sm leading-7 text-[#5f5658]">No more unanswered DMs, scattered emails, or leads disappearing between platforms.</p>
+          </div>
+          <div class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+            <p class="serif text-2xl text-[#2f2b2c]">Your calendar is manual</p>
+            <p class="mt-3 text-sm leading-7 text-[#5f5658]">Let an automated booking flow handle the repetitive back-and-forth for you.</p>
+          </div>
+          <div class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+            <p class="serif text-2xl text-[#2f2b2c]">Branding feels inconsistent</p>
+            <p class="mt-3 text-sm leading-7 text-[#5f5658]">Elevate from “just another beauty site” to a refined, editorial experience.</p>
+          </div>
+          <div class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+            <p class="serif text-2xl text-[#2f2b2c]">Bridal leads need nurturing</p>
+            <p class="mt-3 text-sm leading-7 text-[#5f5658]">A smart pipeline moves couples from interest to consult to deposit with ease.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- FEATURES GRID SECTION: Core SmartSite benefits and conversion tools        -->
+    <!-- ============================================================================ -->
+    <section id="features" data-section="features" class="bg-[#fffaf8]">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-12">
+        <div class="max-w-2xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[#a26f78]">Features</p>
+          <h2 class="serif mt-3 text-4xl font-semibold text-[#2f2b2c] sm:text-5xl">A luxury system that looks expensive and works intelligently.</h2>
+        </div>
+        <div class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+            <h3 class="serif text-3xl text-[#2f2b2c]">Editorial SmartSite</h3>
+            <p class="mt-3 leading-7 text-[#5f5658]">Minimal, warm, and premium—built to reflect your artistry and attract higher-value clients.</p>
+          </article>
+          <article class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+            <h3 class="serif text-3xl text-[#2f2b2c]">Automated Booking</h3>
+            <p class="mt-3 leading-7 text-[#5f5658]">Inquiry forms, next steps, reminders, and routing designed to reduce admin work.</p>
+          </article>
+          <article class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+            <h3 class="serif text-3xl text-[#2f2b2c]">Conversion Copy</h3>
+            <p class="mt-3 leading-7 text-[#5f5658]">Messaging that feels aligned with luxury brides while still guiding them to book.</p>
+          </article>
+          <article class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+            <h3 class="serif text-3xl text-[#2f2b2c]">Mobile-First Design</h3>
+            <p class="mt-3 leading-7 text-[#5f5658]">Your site looks impeccable on the device clients actually use to inquire.</p>
+          </article>
+          <article class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+            <h3 class="serif text-3xl text-[#2f2b2c]">Lead Capture</h3>
+            <p class="mt-3 leading-7 text-[#5f5658]">Collect the right details from the start so your follow-up is effortless and polished.</p>
+          </article>
+          <article class="rounded-3xl border border-[#eadfd8] bg-[#2f2b2c] p-6 text-white soft-shadow">
+            <h3 class="serif text-3xl">Built to Book</h3>
+            <p class="mt-3 leading-7 text-white/80">Every element is intentionally placed to help bridal clients say yes with confidence.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- PIPELINE SECTION: I Do Pipeline bridal booking system                      -->
+    <!-- ============================================================================ -->
+    <section id="pipeline" data-section="pipeline" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-12">
+      <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[#a26f78]">I Do Pipeline</p>
+          <h2 class="serif mt-3 text-4xl font-semibold text-[#2f2b2c] sm:text-5xl">A bridal booking system that moves from inquiry to “I do” with grace.</h2>
+          <p class="mt-5 text-lg leading-8 text-[#5f5658]">This is the heart of the system: a refined pipeline designed specifically for bridal makeup artists and hairstylists who want a high-touch client journey without high-touch admin.</p>
+          <div class="mt-8 space-y-4">
+            <div class="rounded-2xl border border-[#eadfd8] bg-white p-5 soft-shadow">
+              <p class="font-semibold text-[#2f2b2c]">1. Inquiry & Availability</p>
+              <p class="mt-1 text-sm leading-6 text-[#5f5658]">Capture key details, event date, and service needs instantly.</p>
+            </div>
+            <div class="rounded-2xl border border-[#eadfd8] bg-white p-5 soft-shadow">
+              <p class="font-semibold text-[#2f2b2c]">2. Qualification & Nurture</p>
+              <p class="mt-1 text-sm leading-6 text-[#5f5658]">Guide dream clients with automated responses and elegant next-step prompts.</p>
+            </div>
+            <div class="rounded-2xl border border-[#eadfd8] bg-white p-5 soft-shadow">
+              <p class="font-semibold text-[#2f2b2c]">3. Consult & Deposit</p>
+              <p class="mt-1 text-sm leading-6 text-[#5f5658]">Move confirmed brides toward consultation and secured booking with confidence.</p>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-[2rem] border border-[#eadfd8] bg-[#fffaf8] p-6 soft-shadow">
+          <div class="rounded-[1.5rem] bg-white p-6">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-[#8c7a7d]">Pipeline Snapshot</p>
+            <div class="mt-5 space-y-4">
+              <div class="flex items-center gap-4 rounded-2xl bg-[#f9f2f0] p-4">
+                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#2f2b2c] text-sm font-semibold text-white">01</span>
+                <div>
+                  <p class="font-semibold">New Bridal Inquiry</p>
+                  <p class="text-sm text-[#63595b]">Auto-captured from the SmartSite form</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 rounded-2xl bg-[#f9f2f0] p-4">
+                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#a26f78] text-sm font-semibold text-white">02</span>
+                <div>
+                  <p class="font-semibold">Qualified Lead</p>
+                  <p class="text-sm text-[#63595b]">Sent to the right nurture sequence</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 rounded-2xl bg-[#f9f2f0] p-4">
+                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#d7a1a8] text-sm font-semibold text-white">03</span>
+                <div>
+                  <p class="font-semibold">Consultation Scheduled</p>
+                  <p class="text-sm text-[#63595b]">Calendar-linked and ready for deposit</p>
+                </div>
+              </div>
+              <div class="rounded-2xl bg-[#2f2b2c] p-5 text-white">
+                <p class="serif text-3xl">Booked with elegance.</p>
+                <p class="mt-2 text-sm text-white/80">Less friction. More weddings. Better client experience.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- AI TOOLS SECTION: Voice, widget, phone, and DM support                    -->
+    <!-- ============================================================================ -->
+    <section data-section="ai-tools" class="bg-[#faf3f2]">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-12">
+        <div class="grid gap-10 lg:grid-cols-[1fr_.95fr]">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[#a26f78]">AI Tools</p>
+            <h2 class="serif mt-3 text-4xl font-semibold text-[#2f2b2c] sm:text-5xl">Meet clients wherever they already are.</h2>
+            <p class="mt-5 max-w-xl text-lg leading-8 text-[#5f5658]">BFF Marketing can extend your presence across voice, widgets, phone, and direct messages—so your business feels responsive, modern, and beautifully organized.</p>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+              <p class="serif text-2xl text-[#2f2b2c]">Voice</p>
+              <p class="mt-3 text-sm leading-7 text-[#5f5658]">Answer common questions and guide inquiries with a polished voice experience.</p>
+            </div>
+            <div class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+              <p class="serif text-2xl text-[#2f2b2c]">Widget</p>
+              <p class="mt-3 text-sm leading-7 text-[#5f5658]">A seamless on-site assistant that supports bookings and captures leads.</p>
+            </div>
+            <div class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+              <p class="serif text-2xl text-[#2f2b2c]">Phone</p>
+              <p class="mt-3 text-sm leading-7 text-[#5f5658]">Offer a professional first response without adding to your workload.</p>
+            </div>
+            <div class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+              <p class="serif text-2xl text-[#2f2b2c]">DM</p>
+              <p class="mt-3 text-sm leading-7 text-[#5f5658]">Stay present in social conversations while keeping the client journey organized.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- TESTIMONIALS SECTION: Social proof and luxury positioning                  -->
+    <!-- ============================================================================ -->
+    <section data-section="testimonials" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-12">
+      <div class="max-w-2xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[#a26f78]">Client Love</p>
+        <h2 class="serif mt-3 text-4xl font-semibold text-[#2f2b2c] sm:text-5xl">Designed to make your work feel as premium as your results.</h2>
+      </div>
+      <div class="mt-10 grid gap-5 lg:grid-cols-3">
+        <figure class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+          <blockquote class="serif text-2xl leading-8 text-[#2f2b2c]">“The brand finally matches the level of service I provide.”</blockquote>
+          <figcaption class="mt-4 text-sm text-[#63595b]">Bridal Makeup Artist</figcaption>
+        </figure>
+        <figure class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+          <blockquote class="serif text-2xl leading-8 text-[#2f2b2c]">“My inquiries feel more organized, and I’m not chasing clients anymore.”</blockquote>
+          <figcaption class="mt-4 text-sm text-[#63595b]">Luxury Hair Stylist</figcaption>
+        </figure>
+        <figure class="rounded-3xl border border-[#eadfd8] bg-white p-6 soft-shadow">
+          <blockquote class="serif text-2xl leading-8 text-[#2f2b2c]">“It’s elegant, easy, and built for brides who expect a polished experience.”</blockquote>
+          <figcaption class="mt-4 text-sm text-[#63595b]">Beauty Studio Owner</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- PRICING SECTION: Three-tier packages with clear value hierarchy            -->
+    <!-- ============================================================================ -->
+    <section id="pricing" data-section="pricing" class="bg-[#fffaf8]">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-12">
+        <div class="max-w-2xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[#a26f78]">Pricing</p>
+          <h2 class="serif mt-3 text-4xl font-semibold text-[#2f2b2c] sm:text-5xl">Choose the level of support that fits your growth.</h2>
+        </div>
+        <div class="mt-10 grid gap-5 lg:grid-cols-3">
+          <div class="rounded-3xl border border-[#eadfd8] bg-white p-7 soft-shadow">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-[#8c7a7d]">Essentials</p>
+            <h3 class="serif mt-3 text-4xl text-[#2f2b2c]">$1,800</h3>
+            <p class="mt-3 text-sm leading-7 text-[#5f5658]">A refined SmartSite starter with the core pages, elegant design, and lead capture.</p>
+            <ul class="mt-5 space-y-3 text-sm text-[#5f5658]">
+              <li>• Luxury homepage layout</li>
+              <li>• Inquiry form + conversion copy</li>
+              <li>• Mobile-first responsive design</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl border-2 border-[#d7a1a8] bg-white p-7 soft-shadow">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-[#a26f78]">Signature</p>
+            <div class="mt-3 flex items-center justify-between">
+              <h3 class="serif text-4xl text-[#2f2b2c]">$3,600</h3>
+              <span class="rounded-full bg-[#f4d7d9] px-3 py-1 text-xs font-semibold text-[#6d545a]">Most Popular</span>
+            </div>
+            <p class="mt-3 text-sm leading-7 text-[#5f5658]">Best for bridal artists ready for an automated booking system and elevated brand experience.</p>
+            <ul class="mt-5 space-y-3 text-sm text-[#5f5658]">
+              <li>• SmartSite + booking flow</li>
+              <li>• I Do Pipeline setup</li>
+              <li>• AI tools integration</li>
+              <li>• SEO foundations</li>
+            </ul>
+          </div>
+          <div class="rounded-3xl border border-[#eadfd8] bg-[#2f2b2c] p-7 text-white soft-shadow">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-white/70">Concierge</p>
+            <h3 class="serif mt-3 text-4xl">$6,500</h3>
+            <p class="mt-3 text-sm leading-7 text-white/80">For established brands wanting full premium support, advanced automation, and a tailored launch strategy.</p>
+            <ul class="mt-5 space-y-3 text-sm text-white/80">
+              <li>• Full SmartSite buildout</li>
+              <li>• Custom AI and booking workflows</li>
+              <li>• Done-for-you optimization</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- ABOUT SECTION: Elizabeth Cameron brand story and trust building           -->
+    <!-- ============================================================================ -->
+    <section data-section="about" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-12">
+      <div class="grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+        <div class="rounded-[2rem] border border-[#eadfd8] bg-[linear-gradient(180deg,#fff, #f9f2f0)] p-6 soft-shadow">
+          <div class="aspect-[4/5] rounded-[1.5rem] bg-[radial-gradient(circle_at_top,rgba(255,255,255,.8),rgba(244,215,217,.35)),linear-gradient(135deg,#f1ddd9,#f8ece5)] p-6">
+            <div class="flex h-full items-end">
+              <div class="rounded-2xl bg-white/85 p-5 max-w-xs soft-shadow">
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-[#8c7a7d]">Elizabeth Cameron</p>
+                <p class="serif mt-2 text-3xl text-[#2f2b2c]">Strategy, design, and automation with taste.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[#a26f78]">About Elizabeth Cameron</p>
+          <h2 class="serif mt-3 text-4xl font-semibold text-[#2f2b2c] sm:text-5xl">A brand built for beauty pros who want sophistication and systems.</h2>
+          <p class="mt-5 max-w-2xl text-lg leading-8 text-[#5f5658]">Elizabeth Cameron created BFF Marketing to help makeup artists and hairstylists translate high-touch artistry into a seamless digital experience. The result is a SmartSite that feels luxurious, a booking flow that feels effortless, and a system that supports growth without sacrificing brand integrity.</p>
+          <p class="mt-5 max-w-2xl text-lg leading-8 text-[#5f5658]">If your dream is to attract aligned brides, reduce admin overwhelm, and present yourself like the premium talent you are, BFF Marketing is designed for you.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- CTA SECTION: High-intent demo prompt and direct conversion link           -->
+    <!-- ============================================================================ -->
+    <section data-section="cta" class="px-4 pb-16 sm:px-6 lg:px-12">
+      <div class="mx-auto max-w-7xl rounded-[2rem] bg-[#2f2b2c] px-6 py-12 text-white soft-shadow sm:px-10 lg:px-14">
+        <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-white/70">Ready to elevate?</p>
+            <h2 class="serif mt-3 text-4xl font-semibold sm:text-5xl">Let’s turn your site into a luxury booking system.</h2>
+            <p class="mt-4 max-w-2xl text-lg leading-8 text-white/80">Take the demo survey and see how BFF Marketing can shape a SmartSite and automated bridal pipeline around your brand, your services, and your ideal clients.</p>
+          </div>
+          <a href="https://bff.marketing/demo-survey" class="inline-flex items-center justify-center rounded-full bg-white px-7 py-4 text-base font-semibold text-[#2f2b2c] transition hover:bg-[#f4d7d9]">Start the Demo Survey</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================================ -->
+  <!-- FOOTER SECTION: Contact details, brand line, and copyright                -->
+  <!-- ============================================================================ -->
+  <footer data-section="footer" class="border-t border-[#eadfd8] bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-12">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="serif text-2xl font-semibold text-[#2f2b2c]">BFF Marketing</p>
+          <p class="mt-1 text-sm text-[#63595b]">Luxury SmartSites and automated booking systems for makeup artists and hairstylists.</p>
+        </div>
+        <div class="text-sm text-[#63595b]">
+          <a href="https://bff.marketing" class="font-semibold text-[#2f2b2c] hover:underline">bff.marketing</a>
+          <span class="mx-3 text-[#c5b5b8]">•</span>
+          <a href="https://bff.marketing/demo-survey" class="font-semibold text-[#2f2b2c] hover:underline">Demo Survey</a>
+        </div>
+      </div>
+      <p class="mt-8 text-xs uppercase tracking-[0.24em] text-[#8c7a7d]">© 2026 BFF Marketing</p>
+    </div>
+  </footer>
+</body>
+</html>
