@@ -253,49 +253,62 @@
 
   <main id="top">
     <!-- ============================================================================ -->
-    <!-- HERO SECTION: Bold, high-contrast intro with massive billboard typography   -->
+    <!-- HERO SECTION: Rebuilt two-column layout                                     -->
     <!-- ============================================================================ -->
-    <section data-section="hero" class="relative min-h-screen w-full overflow-hidden flex items-center bg-black">
-      <!-- Background Image Layer -->
-      <div class="absolute inset-0 z-0 hero-bg-layer"></div>
-      
-      <!-- Gradient Overlay Layer -->
-      <div class="absolute inset-0 z-[1] hero-gradient-overlay"></div>
-
-      <!-- Sparkles -->
-      <div class="absolute inset-0 opacity-30 z-[2]" id="sparkleLayer" aria-hidden="true"></div>
-      
-      <div class="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 md:px-8 lg:px-12 relative z-[10]">
-        <div class="w-full lg:max-w-[600px] text-center lg:text-left">
-          <p class="word-reveal mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-white">Luxury SmartSite for MUAs & Hairstylists ✦</p>
-          
-          <h1 class="hero-text-shadow text-[3.8rem] font-extrabold leading-[0.85] text-white sm:text-[5.5rem] lg:text-[7.2rem]">
-            <span class="word-reveal inline-block">NEVER</span>
-            <span class="word-reveal inline-block">LOSE</span>
-            <span class="word-reveal inline-block">ANOTHER</span>
-            <span class="word-reveal inline-block text-[#E91E8C]">CLIENT</span>
-            <span class="word-reveal inline-block">BECAUSE</span>
-            <span class="word-reveal inline-block">YOU DIDN'T</span>
-            <span class="word-reveal inline-block">FOLLOW UP</span>
-            <span class="word-reveal inline-block text-[#E91E8C]">FAST</span>
-            <span class="word-reveal inline-block">ENOUGH.</span>
-          </h1>
-
-          <div class="reveal-on-scroll mt-10 max-w-2xl mx-auto lg:mx-0">
-            <p class="inline-block rounded-2xl border border-white/20 bg-white/40 px-6 py-4 text-xl font-semibold leading-relaxed text-[#1a1a1a] backdrop-blur-lg sm:text-2xl">
-              A luxury SmartSite + automated bridal booking system built for makeup artists &amp; hairstylists.
-            </p>
-          </div>
-
-          <div class="reveal-on-scroll mt-12 flex flex-col gap-5 sm:flex-row justify-center lg:justify-start">
-            <a href="https://bff.marketing/demo-survey" class="cta-primary inline-flex items-center justify-center rounded-full bg-[#E91E8C] px-10 py-5 text-base font-extrabold uppercase tracking-[0.18em] text-white shadow-[0_10px_25px_-5px_rgba(233,30,140,0.4)] transition hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(233,30,140,0.5)]">
-              Get Your Free Demo
-            </a>
-            <a href="#features" class="inline-flex items-center justify-center rounded-full border-2 border-white bg-transparent px-10 py-5 text-base font-extrabold uppercase tracking-[0.18em] text-white transition hover:-translate-y-1 hover:bg-white hover:text-black">
-              See How It Works
-            </a>
-          </div>
+    <section class="hero" data-section="hero" style="
+      background: linear-gradient(135deg, #F8B4D9 0%, #f472b6 40%, #fce7f3 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      overflow: hidden;
+      position: relative;
+    ">
+      <!-- LEFT SIDE: Text content -->
+      <div class="hero-text" style="
+        flex: 0 0 52%;
+        max-width: 52%;
+        padding: 80px 48px 80px 64px;
+        z-index: 2;
+        position: relative;
+      ">
+        <!-- badge -->
+        <div class="reveal-on-scroll" style="display:inline-block; border: 2px solid #0a0a0a; border-radius: 50px; padding: 8px 20px; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #0a0a0a; margin-bottom: 24px; background: rgba(255,255,255,0.3);">LUXURY SMARTSITE FOR MUAS & HAIRSTYLISTS ✦</div>
+        <!-- headline -->
+        <h1 class="reveal-on-scroll" style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 6vw, 88px); line-height: 0.95; color: #ffffff; text-shadow: 3px 3px 0px rgba(0,0,0,0.3); margin: 0 0 24px 0; letter-spacing: 1px;">
+          NEVER LOSE<br>
+          ANOTHER <span style="color: #E91E8C;">CLIENT</span><br>
+          BECAUSE YOU<br>
+          DIDN'T FOLLOW UP<br>
+          <span style="color: #E91E8C;">FAST</span> ENOUGH.
+        </h1>
+        <!-- subtitle -->
+        <p class="reveal-on-scroll" style="font-family: 'DM Sans', sans-serif; font-size: 17px; color: #1a1a1a; font-weight: 500; margin: 0 0 36px 0; max-width: 420px; line-height: 1.6;">A Luxury SmartSite + Automated Booking System Built For MUAs And Hairstylists.</p>
+        <!-- CTAs -->
+        <div class="reveal-on-scroll" style="display: flex; gap: 16px; flex-wrap: wrap;">
+          <a href="https://bff.marketing/demo-survey" style="background: #E91E8C; color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px; padding: 16px 36px; border-radius: 50px; text-decoration: none; letter-spacing: 1px; box-shadow: 0 8px 24px rgba(233,30,140,0.4);">GET YOUR FREE DEMO</a>
+          <a href="#features" style="background: transparent; color: #0a0a0a; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px; padding: 16px 36px; border-radius: 50px; text-decoration: none; border: 2px solid #0a0a0a; letter-spacing: 1px;">SEE HOW IT WORKS</a>
         </div>
+      </div>
+
+      <!-- RIGHT SIDE: Elizabeth's photo -->
+      <div class="hero-image" style="
+        flex: 0 0 48%;
+        max-width: 48%;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+      ">
+        <img src="https://assets.cdn.filesafe.space/M6UyEWjz5b9Ff1AAV7Bh/media/691e919c9389314dcda4f173.png" 
+          alt="Elizabeth Cameron - BFF Marketing" 
+          style="
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+          "
+        />
       </div>
     </section>
 
