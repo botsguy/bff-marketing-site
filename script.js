@@ -19,27 +19,8 @@
       items.forEach((item) => observer.observe(item));
     }
 
-    // ===== SPARKLE PARTICLE GENERATOR =====
-    function createSparkles() {
-      const layer = document.getElementById('sparkleLayer');
-      if (!layer) return;
-      const stars = ['✦', '✧', '★'];
-      for (let i = 0; i < 22; i++) {
-        const s = document.createElement('span');
-        s.className = 'float-star text-[#E91E8C]';
-        s.textContent = stars[i % stars.length];
-        s.style.left = Math.random() * 100 + '%';
-        s.style.bottom = (-10 - Math.random() * 40) + '%';
-        s.style.fontSize = (12 + Math.random() * 20) + 'px';
-        s.style.animationDuration = (8 + Math.random() * 12) + 's';
-        s.style.animationDelay = (Math.random() * 5) + 's';
-        layer.appendChild(s);
-      }
-    }
-
     function initPageMotion() {
       initScrollReveal();
-      createSparkles();
       updateNavState();
     }
 
