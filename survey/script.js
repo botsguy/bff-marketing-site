@@ -18,9 +18,6 @@
       let currentStep = 1;
 
       // ===== UPDATE STEP VISIBILITY =====
-      // Function: showStep(stepNumber)
-      // Purpose: Display only the active survey step and update progress states
-      // Triggers: Called whenever user advances or goes back
       function showStep(stepNumber) {
         currentStep = stepNumber;
         steps.forEach((step) => step.classList.remove('active'));
@@ -33,8 +30,6 @@
       }
 
       // ===== UPDATE PROGRESS DOTS =====
-      // Function: updateDots(stepNumber)
-      // Purpose: Fill completed steps and highlight the current step in the indicator
       function updateDots(stepNumber) {
         for (let i = 1; i <= 5; i++) {
           const dot = document.getElementById(`dot-${i}`);
@@ -46,8 +41,6 @@
       }
 
       // ===== HANDLE TILE SELECTIONS =====
-      // Function: handleTileClick(button)
-      // Purpose: Save single-select and multi-select answers with visual selection states
       function handleTileClick(button) {
         const field = button.dataset.field;
         const value = button.dataset.value;
@@ -76,31 +69,18 @@
       }
 
       // ===== ADVANCE TO NEXT STEP =====
-      // Function: goNext()
-      // Purpose: Move forward with a smooth transition and persist current state
       function goNext() {
         if (currentStep < 5) showStep(currentStep + 1);
       }
 
       // ===== GO TO PREVIOUS STEP =====
-      // Function: goBack(e)
-      // Purpose: Navigate back one step without losing prior answers
       function goBack(e) {
         e.preventDefault();
         if (currentStep > 1) showStep(currentStep - 1);
       }
 
-      // ===== SAVE ANSWERS TO LOCAL STORAGE =====
-      // Function: saveAnswers()
-      // Purpose: Store the survey object for later retrieval and redirect continuity
-      function saveAnswers() {
-        localStorage.setItem('bff_survey_answers', JSON.stringify(state));
-      }
-
       // ===== FINAL FORM SUBMISSION =====
-      // Function: handleSubmit(e)
-      // Purpose: Validate contact details, show loading state, persist answers, then redirect
-      function handleSubmit(e) {
+      async function handleSubmit(e) {
         e.preventDefault();
         state.name = document.getElementById('fullName').value.trim();
         state.email = document.getElementById('emailAddress').value.trim();
@@ -110,9 +90,50 @@
           return;
         }
 
-        saveAnswers();
         loadingState.classList.remove('hidden');
         surveyForm.classList.add('hidden');
+
+        // Collect all survey answers
+        const surveyData = {
+          businessType: localStorage.getItem('bff_businessType') || state.businessType || '',
+          bookingMethod: localStorage.getItem('bff_bookingMethod') || state.bookingMethod || '',
+          frustrations: localStorage.getItem('bff_frustrations') || (state.frustrations ? (Array.isArray(state.frustrations) ? state.frustrations.join(', ') : state.frustrations) : ''),
+          bookingsPerMonth: localStorage.getItem('bff_bookingsPerMonth') || state.bookingsPerMonth || '',
+          name: document.getElementById('fullName') ? document.getElementById('fullName').value : '',
+          email: document.getElementById('emailAddress') ? document.getElementById('emailAddress').value : ''
+        };
+
+        // Also save to localStorage
+        localStorage.setItem('bff_survey_answers', JSON.stringify(surveyData));
+
+        // POST to PayMeGPT contacts API
+        try {
+          const nameParts = surveyData.name.trim().split(' ');
+          const firstName = nameParts[0] || '';
+          const lastName = nameParts.slice(1).join(' ') || '';
+          
+          await fetch('https://paymegpt.com/api/contacts', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Widget-ID': '66300591'
+            },
+            body: JSON.stringify({
+              firstName: firstName,
+              lastName: lastName,
+              email: surveyData.email,
+              phone: '',
+              company: surveyData.businessType,
+              notes: `BFF Survey Lead\n\nBusiness Type: ${surveyData.businessType}\nCurrent Booking Method: ${surveyData.bookingMethod}\nBiggest Frustrations: ${surveyData.frustrations}\nMonthly Bookings: ${surveyData.bookingsPerMonth}\nSurvey Completed: ${new Date().toLocaleDateString()}`,
+              pipelineId: 92,
+              pipelineStage: 'New Lead',
+              tags: ['survey-lead', 'bff-funnel', surveyData.businessType.toLowerCase().replace(/\s+/g, '-')]
+            })
+          });
+        } catch(e) {
+          // Fail silently — don't block redirect if API call fails
+          console.log('Contact creation error:', e);
+        }
 
         setTimeout(() => {
           window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
