@@ -1,19 +1,29 @@
-/* ===== BASE TYPOGRAPHY & COLOR SYSTEM ===== */
-    /* Luxury Glossier-inspired palette with warm neutrals and charcoal contrast */
-    :root{
-      --blush:#f4d7d9;
-      --cream:#faf5ef;
-      --rose:#d7a1a8;
-      --charcoal:#2f2b2c;
-      --mauve:#c98f97;
-    }
-    body{font-family:'DM Sans',sans-serif;background:linear-gradient(180deg,var(--cream) 0%,#fff 42%,#f7efed 100%);color:var(--charcoal);}
-    h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;}
-    .soft-shadow{box-shadow:0 18px 60px rgba(47,43,44,.10);}
-    .glass{backdrop-filter:blur(10px);background:rgba(255,255,255,.7);}
-    .ticker-track{animation:ticker 26s linear infinite;white-space:nowrap;}
-    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-    .floaty{animation:floaty 7s ease-in-out infinite;}
-    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-    .shine{background:linear-gradient(120deg,rgba(255,255,255,.15),rgba(255,255,255,.55),rgba(255,255,255,.15));background-size:200% 100%;animation:shine 5s ease-in-out infinite;}
-    @keyframes shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+/* ===== BASE TYPOGRAPHY ===== */
+    body { font-family: 'DM Sans', sans-serif; background:#fff; color:#0A0A0A; overflow-x:hidden; }
+    h1,h2,h3,.display-font { font-family:'Bebas Neue', sans-serif; letter-spacing:.02em; }
+    /* ===== HERO ANIMATIONS ===== */
+    .word-reveal { opacity:0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+    .word-reveal.is-visible { opacity:1; transform: translateY(0); }
+    .float-star { position:absolute; pointer-events:none; opacity:.8; animation: floatUp linear infinite; }
+    @keyframes floatUp { from { transform: translateY(40px) scale(.9); opacity:0; } 15%{opacity:1;} to { transform: translateY(-80vh) scale(1.2); opacity:0; } }
+    /* ===== SCROLL REVEAL ===== */
+    .reveal-on-scroll { opacity:0; transform: translateY(36px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal-on-scroll.is-visible { opacity:1; transform: translateY(0); }
+    /* ===== GLASS CARDS ===== */
+    .glass-card { background: rgba(10,10,10,.72); backdrop-filter: blur(14px); border:1px solid rgba(248,180,217,.25); box-shadow: 0 0 0 rgba(233,30,140,0); transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+    .glass-card:hover { transform: translateY(-8px); box-shadow: 0 0 38px rgba(233,30,140,.28); border-color: rgba(233,30,140,.55); }
+    .pink-glow { box-shadow: 0 0 28px rgba(233,30,140,.28); }
+    /* ===== MARQUEE ===== */
+    .marquee { display:flex; width:max-content; animation: marquee 28s linear infinite; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    /* ===== TIMELINE ===== */
+    .timeline-line { position:absolute; left:50%; top:0; bottom:0; width:3px; transform:translateX(-50%); background: linear-gradient(180deg, transparent 0%, #E91E8C 15%, #F472B6 50%, #E91E8C 85%, transparent 100%); box-shadow:0 0 18px rgba(233,30,140,.55); animation:pulseLine 2.8s ease-in-out infinite; }
+    @keyframes pulseLine { 50% { opacity:.65; } }
+    /* ===== AI BADGE ===== */
+    .ai-badge { animation: pulseBadge 2s ease-in-out infinite; }
+    @keyframes pulseBadge { 50% { transform: scale(1.05); box-shadow:0 0 24px rgba(248,180,217,.38); } }
+    /* ===== NAV SCROLL STATE ===== */
+    .nav-scrolled { background: rgba(10,10,10,.95); backdrop-filter: blur(14px); }
+    /* ===== ACCENT UNDERLINE ===== */
+    .accent-underline { position:relative; display:inline-block; }
+    .accent-underline::after { content:''; position:absolute; left:0; bottom:.05em; width:100%; height:10px; background: linear-gradient(135deg, rgba(248,180,217,.15), rgba(233,30,140,.95)); z-index:-1; border-radius:999px; }
