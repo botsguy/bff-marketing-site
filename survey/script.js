@@ -84,45 +84,63 @@
         e.preventDefault();
         const answers = state;
 
-        // Collect all survey answers
-        const fullName = document.querySelector('input[type="text"]') ? document.querySelector('input[type="text"]').value.trim() : '';
-        const emailVal = document.querySelector('input[type="email"]') ? document.querySelector('input[type="email"]').value.trim() : '';
-
-        if (!fullName || !emailVal) {
-          alert('Please enter your full name and email address.');
-          return;
-        }
-
         loadingState.classList.remove('hidden');
         surveyForm.classList.add('hidden');
 
-        // Build form data for PayMeGPT native form
-        const formPayload = new FormData();
-        formPayload.append('Full Name', fullName);
-        formPayload.append('Email Address', emailVal);
-        formPayload.append('Business Type', answers.businessType || '');
-        formPayload.append('Current Booking Method', answers.bookingMethod || '');
-        formPayload.append('Biggest Frustration', Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''));
-        formPayload.append('Monthly Bookings', answers.bookingsPerMonth || '');
-
         try {
-          await fetch('https://paymegpt.com/forms/kneycsr8', {
-            method: 'POST',
-            body: formPayload
-          });
-        } catch(e) {
-          console.log('Form submission error:', e);
-        }
+          // Grab name and email from the input fields
+          const allTextInputs = document.querySelectorAll('input[type="text"], input:not([type="email"]):not([type="submit"]):not([type="button"])');
+          const allEmailInputs = document.querySelectorAll('input[type="email"]');
+          const fullName = allTextInputs.length > 0 ? allTextInputs[allTextInputs.length > 1 ? allTextInputs.length - 2 : 0].value.trim() : '';
+          const emailVal = allEmailInputs.length > 0 ? allEmailInputs[0].value.trim() : '';
 
-        // Save to localStorage regardless
-        localStorage.setItem('bff_survey_answers', JSON.stringify({
-          name: fullName,
-          email: emailVal,
-          businessType: answers.businessType || '',
-          bookingMethod: answers.bookingMethod || '',
-          frustrations: answers.frustrations || '',
-          bookingsPerMonth: answers.bookingsPerMonth || ''
-        }));
+          // Build notes string from all answers
+          const notesStr = [
+            'BFF Survey Lead',
+            '---',
+            'Business Type: ' + (answers.businessType || 'Not provided'),
+            'Booking Method: ' + (answers.bookingMethod || 'Not provided'),
+            'Frustrations: ' + (Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || 'Not provided')),
+            'Monthly Bookings: ' + (answers.bookingsPerMonth || 'Not provided'),
+            'Submitted: ' + new Date().toLocaleString()
+          ].join('\n');
+
+          // Save to localStorage
+          localStorage.setItem('bff_survey_answers', JSON.stringify({
+            name: fullName, email: emailVal,
+            businessType: answers.businessType || '',
+            bookingMethod: answers.bookingMethod || '',
+            frustrations: answers.frustrations || '',
+            bookingsPerMonth: answers.bookingsPerMonth || ''
+          }));
+
+          // POST to PayMeGPT send_message endpoint (proven working)
+          try {
+            const payload = {
+              widgetId: '66300591',
+              message: 'NEW SURVEY LEAD\nName: ' + fullName + '\nEmail: ' + emailVal + '\n' + notesStr,
+              contactName: fullName,
+              contactEmail: emailVal,
+              channel: 'webchat',
+              metadata: {
+                businessType: answers.businessType || '',
+                bookingMethod: answers.bookingMethod || '',
+                frustrations: Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''),
+                bookingsPerMonth: answers.bookingsPerMonth || '',
+                source: 'bff-survey'
+              }
+            };
+            await fetch('https://paymegpt.com/api/widget/message', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+          } catch(e) {
+            console.log('PayMeGPT contact error:', e);
+          }
+        } catch (globalErr) {
+          console.log('Form logic error:', globalErr);
+        }
 
         setTimeout(() => {
           window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
