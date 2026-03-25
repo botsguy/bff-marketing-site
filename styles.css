@@ -30,3 +30,22 @@
 
     /* ===== HERO ENHANCEMENTS ===== */
     .hero-text-shadow { text-shadow: 2px 2px 0px #000, 4px 4px 12px rgba(0,0,0,0.6); }
+
+    /* CUSTOM HERO BACKGROUND & OVERLAY */
+    .hero-bg-layer {
+      background-image: url('https://assets.cdn.filesafe.space/M6UyEWjz5b9Ff1AAV7Bh/media/691e919c9389314dcda4f173.png');
+      background-size: cover;
+      background-position: right center;
+      background-repeat: no-repeat;
+    }
+    .hero-gradient-overlay {
+      background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0) 100%);
+    }
+    @media (max-width: 768px) {
+      .hero-bg-layer {
+        background-position: top center;
+      }
+      .hero-gradient-overlay {
+        background: rgba(0,0,0,0.65);
+      }
+    }
