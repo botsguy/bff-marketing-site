@@ -255,17 +255,21 @@
     <!-- ============================================================================ -->
     <!-- HERO SECTION: Bold, high-contrast intro with massive billboard typography   -->
     <!-- ============================================================================ -->
-    <section data-section="hero" class="relative overflow-hidden bg-gradient-to-br from-[#F8B4D9] via-white to-[#F8B4D9]">
-      <!-- Dark overlay for text contrast -->
-      <div class="absolute inset-0 bg-black/35 z-[1]"></div>
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(233,30,140,.18),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(233,30,140,.12),transparent_32%)] z-[2]"></div>
-      <div class="absolute inset-0 opacity-40 z-[2]" id="sparkleLayer" aria-hidden="true"></div>
+    <section data-section="hero" class="relative min-h-screen w-full overflow-hidden flex items-center bg-black">
+      <!-- Background Image Layer -->
+      <div class="absolute inset-0 z-0 hero-bg-layer"></div>
       
-      <div class="mx-auto flex min-h-[95vh] max-w-7xl items-center px-4 py-20 sm:px-6 md:px-8 lg:px-12 relative z-[3]">
-        <div class="max-w-6xl">
+      <!-- Gradient Overlay Layer -->
+      <div class="absolute inset-0 z-[1] hero-gradient-overlay"></div>
+
+      <!-- Sparkles -->
+      <div class="absolute inset-0 opacity-30 z-[2]" id="sparkleLayer" aria-hidden="true"></div>
+      
+      <div class="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 md:px-8 lg:px-12 relative z-[10]">
+        <div class="w-full lg:max-w-[55%] text-center lg:text-left">
           <p class="word-reveal mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-white">Luxury SmartSite for MUAs & Hairstylists ✦</p>
           
-          <h1 class="hero-text-shadow max-w-6xl text-[4.8rem] font-extrabold leading-[0.82] text-white sm:text-[6.5rem] lg:text-[9.2rem]">
+          <h1 class="hero-text-shadow text-[3.8rem] font-extrabold leading-[0.85] text-white sm:text-[5.5rem] lg:text-[7.2rem]">
             <span class="word-reveal inline-block">NEVER</span>
             <span class="word-reveal inline-block">LOSE</span>
             <span class="word-reveal inline-block">ANOTHER</span>
@@ -277,17 +281,17 @@
             <span class="word-reveal inline-block">ENOUGH.</span>
           </h1>
 
-          <div class="reveal-on-scroll mt-10 max-w-2xl">
+          <div class="reveal-on-scroll mt-10 max-w-2xl mx-auto lg:mx-0">
             <p class="inline-block rounded-2xl border border-white/20 bg-white/40 px-6 py-4 text-xl font-semibold leading-relaxed text-[#1a1a1a] backdrop-blur-lg sm:text-2xl">
               A luxury SmartSite + automated bridal booking system built for makeup artists &amp; hairstylists.
             </p>
           </div>
 
-          <div class="reveal-on-scroll mt-12 flex flex-col gap-5 sm:flex-row">
+          <div class="reveal-on-scroll mt-12 flex flex-col gap-5 sm:flex-row justify-center lg:justify-start">
             <a href="https://bff.marketing/demo-survey" class="cta-primary inline-flex items-center justify-center rounded-full bg-[#E91E8C] px-10 py-5 text-base font-extrabold uppercase tracking-[0.18em] text-white shadow-[0_10px_25px_-5px_rgba(233,30,140,0.4)] transition hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(233,30,140,0.5)]">
               Get Your Free Demo
             </a>
-            <a href="#features" class="inline-flex items-center justify-center rounded-full border-2 border-black bg-transparent px-10 py-5 text-base font-extrabold uppercase tracking-[0.18em] text-black transition hover:-translate-y-1 hover:bg-black hover:text-white">
+            <a href="#features" class="inline-flex items-center justify-center rounded-full border-2 border-white bg-transparent px-10 py-5 text-base font-extrabold uppercase tracking-[0.18em] text-white transition hover:-translate-y-1 hover:bg-white hover:text-black">
               See How It Works
             </a>
           </div>
