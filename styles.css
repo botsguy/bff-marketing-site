@@ -120,7 +120,6 @@ html, body {
         top: 0 !important;
       }
 
-      /* Make the image a background on mobile */
       .hero-image {
         position: absolute !important;
         top: 0 !important;
@@ -140,7 +139,6 @@ html, body {
         object-position: center top !important;
       }
 
-      /* Text sits on top of the image */
       .hero-text {
         position: relative !important;
         z-index: 2 !important;
@@ -152,7 +150,6 @@ html, body {
         margin-top: 0 !important;
       }
 
-      /* Dark gradient overlay on mobile so text is readable */
       .hero::before {
         content: '';
         position: absolute;
@@ -186,25 +183,12 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  /* Make the parent a flex column so we can reorder */
-  main {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  body > *,
-  .page-wrapper > *,
-  main > * {
-    order: 10; /* Set a high default so anything not specified goes after */
-  }
-
   .hero {
     position: relative !important;
     display: block !important;
     min-height: 100svh !important;
     padding: 0 !important;
     margin: 0 !important;
-    order: 1 !important;
   }
   .hero-image {
     position: absolute !important;
@@ -239,7 +223,6 @@ html, body {
     display: block !important;
   }
   
-  /* Push the marquee/ticker to appear after the hero */
   .marquee,
   .ticker,
   .ticker-wrap,
@@ -255,22 +238,10 @@ html, body {
     padding: 16px 0 !important;
     margin: 0 !important;
     overflow: visible !important;
-    order: 3 !important;
   }
-
-  /* Reset layout for subsequent sections to maintain order after ticker */
-  #features { order: 4 !important; }
-  #pipeline { order: 5 !important; }
-  #booked-paid { order: 5.5 !important; }
-  #ai-tools { order: 6 !important; }
-  section[data-section="audience"] { order: 7 !important; }
-  #pricing { order: 8 !important; }
-  section[data-section="founder"] { order: 9 !important; }
-  section[data-section="cta-banner"] { order: 10 !important; }
 }
 
 @media (max-width: 768px) {
-  /* Fix 2: Make hero fill full height with no extra pink space below buttons */
   .hero {
     min-height: 100svh !important;
     height: auto !important;
@@ -281,7 +252,6 @@ html, body {
     margin: 0 !important;
   }
 
-  /* Fix 3: Hero text takes full width, starts right under nav */
   .hero-text {
     position: relative !important;
     z-index: 2 !important;
@@ -297,7 +267,6 @@ html, body {
     justify-content: center !important;
   }
 
-  /* Fix 4: Image stays absolutely behind text, fills full hero */
   .hero-image {
     position: absolute !important;
     top: 0 !important;
