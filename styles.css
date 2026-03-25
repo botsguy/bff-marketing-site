@@ -402,3 +402,52 @@ html, body {
     text-align: left !important;
   }
 }
+
+.founder-img-wrap {
+  position: relative;
+  width: 300px;
+  height: 340px;
+  border-radius: 24px;
+  flex-shrink: 0;
+  animation: founderGlow 3s ease-in-out infinite;
+}
+
+.founder-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 24px;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes founderGlow {
+  0% {
+    box-shadow: 
+      0 0 20px 4px rgba(233,30,140,0.4),
+      0 0 60px 10px rgba(233,30,140,0.15),
+      0 0 0px 0px rgba(248,180,217,0);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px 8px rgba(233,30,140,0.65),
+      0 0 80px 20px rgba(233,30,140,0.25),
+      0 0 120px 40px rgba(248,180,217,0.1);
+  }
+  100% {
+    box-shadow: 
+      0 0 20px 4px rgba(233,30,140,0.4),
+      0 0 60px 10px rgba(233,30,140,0.15),
+      0 0 0px 0px rgba(248,180,217,0);
+  }
+}
+
+@media (max-width: 768px) {
+  .founder-img-wrap {
+    width: 240px;
+    height: 272px;
+    margin: 0 auto 32px;
+  }
+}
