@@ -1,0 +1,19 @@
+/* ===== BASE TYPOGRAPHY & COLOR SYSTEM ===== */
+    /* Luxury Glossier-inspired palette with warm neutrals and charcoal contrast */
+    :root{
+      --blush:#f4d7d9;
+      --cream:#faf5ef;
+      --rose:#d7a1a8;
+      --charcoal:#2f2b2c;
+      --mauve:#c98f97;
+    }
+    body{font-family:'DM Sans',sans-serif;background:linear-gradient(180deg,var(--cream) 0%,#fff 42%,#f7efed 100%);color:var(--charcoal);}
+    h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;}
+    .soft-shadow{box-shadow:0 18px 60px rgba(47,43,44,.10);}
+    .glass{backdrop-filter:blur(10px);background:rgba(255,255,255,.7);}
+    .ticker-track{animation:ticker 26s linear infinite;white-space:nowrap;}
+    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .floaty{animation:floaty 7s ease-in-out infinite;}
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .shine{background:linear-gradient(120deg,rgba(255,255,255,.15),rgba(255,255,255,.55),rgba(255,255,255,.15));background-size:200% 100%;animation:shine 5s ease-in-out infinite;}
+    @keyframes shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
