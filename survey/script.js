@@ -115,7 +115,7 @@
         surveyForm.classList.add('hidden');
 
         setTimeout(() => {
-          window.location.href = 'https://bff.marketing/demo-survey';
+          window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
         }, 1500);
       }
 
