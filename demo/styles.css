@@ -1,0 +1,49 @@
+/* ===== GLOBAL BASE STYLES ===== */
+    :root{
+      --pink:#E91E8C;
+      --soft-pink:#F8B4D9;
+      --black:#0A0A0A;
+      --white:#FFFFFF;
+      --charcoal:#202020;
+    }
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:'DM Sans',sans-serif;
+      background:var(--black);
+      color:var(--white);
+    }
+    .font-heading{font-family:'Bebas Neue',sans-serif; letter-spacing:.03em;}
+    .fade-in-up{
+      animation:fadeInUp .8s ease both;
+    }
+    @keyframes fadeInUp{
+      from{opacity:0; transform:translateY(24px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+    .pulse-on-hover:hover{
+      animation:pulseGlow 1.2s ease-in-out infinite;
+    }
+    @keyframes pulseGlow{
+      0%,100%{transform:translateY(0) scale(1); box-shadow:0 10px 30px rgba(233,30,140,.22);}
+      50%{transform:translateY(-1px) scale(1.01); box-shadow:0 14px 36px rgba(233,30,140,.34);}
+    }
+    .pricing-hidden{
+      opacity:0;
+      transform:translateY(40px);
+      pointer-events:none;
+      transition:opacity .8s ease, transform .8s ease;
+    }
+    .pricing-visible{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
+    .card-enter{
+      opacity:0;
+      transform:translateY(22px);
+    }
+    .card-enter.show{
+      opacity:1;
+      transform:translateY(0);
+      transition:all .65s ease;
+    }
