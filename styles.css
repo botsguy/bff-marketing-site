@@ -31,21 +31,8 @@
     /* ===== HERO ENHANCEMENTS ===== */
     .hero-text-shadow { text-shadow: 2px 2px 0px #000, 4px 4px 12px rgba(0,0,0,0.6); }
 
-    /* CUSTOM HERO BACKGROUND & OVERLAY */
-    .hero-bg-layer {
-      background-image: url('https://assets.cdn.filesafe.space/M6UyEWjz5b9Ff1AAV7Bh/media/691e919c9389314dcda4f173.png');
-      background-size: cover;
-      background-position: 80% center;
-      background-repeat: no-repeat;
-    }
-    .hero-gradient-overlay {
-      background: linear-gradient(to right, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.0) 100%);
-    }
     @media (max-width: 768px) {
-      .hero-bg-layer {
-        background-position: 70% center;
-      }
-      .hero-gradient-overlay {
-        background: rgba(0,0,0,0.75);
-      }
+      .hero { flex-direction: column-reverse !important; min-height: auto !important; }
+      .hero-text { flex: unset !important; max-width: 100% !important; padding: 40px 24px !important; }
+      .hero-image { flex: unset !important; max-width: 100% !important; height: 45vh !important; width: 100% !important; }
     }
