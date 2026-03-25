@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   
 
@@ -233,7 +233,6 @@
 <body class="antialiased selection:bg-pink-200 selection:text-black">
   <!-- ============================================================================ -->
   <!-- STICKY NAV: Black background with logo, section links, and primary CTA      -->
-  <!-- Features: Scroll opacity shift, responsive collapse, mobile-safe padding     -->
   <!-- ============================================================================ -->
   <header data-section="nav" class="sticky top-0 z-50 border-b border-white/10 bg-black/85 text-white transition-all duration-300" id="siteNav">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 md:px-8 lg:px-12">
@@ -254,34 +253,41 @@
 
   <main id="top">
     <!-- ============================================================================ -->
-    <!-- HERO SECTION: Full-screen editorial intro with bold typography and CTAs    -->
-    <!-- Features: Gradient sky, floating sparkles, staggered reveal, parallax feel  -->
-    <!-- Mobile Padding: px-4 ensures headlines never touch viewport edges           -->
+    <!-- HERO SECTION: Bold, high-contrast intro with massive billboard typography   -->
     <!-- ============================================================================ -->
     <section data-section="hero" class="relative overflow-hidden bg-gradient-to-br from-[#F8B4D9] via-white to-[#F8B4D9]">
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(233,30,140,.18),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(233,30,140,.12),transparent_32%)]"></div>
-      <div class="absolute inset-0 opacity-40" id="sparkleLayer" aria-hidden="true"></div>
-      <div class="mx-auto flex min-h-[92vh] max-w-7xl items-center px-4 py-16 sm:px-6 md:px-8 lg:px-12">
-        <div class="relative z-10 max-w-5xl">
-          <p class="word-reveal mb-4 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-black/70">Luxury SmartSite for MUAs & Hairstylists ✦</p>
-          <h1 class="max-w-5xl text-[4.6rem] leading-[0.86] text-black sm:text-[6rem] lg:text-[8rem]">
-            <span class="word-reveal inline-block text-white drop-shadow-[0_2px_0_rgba(10,10,10,.8)]">NEVER</span>
-            <span class="word-reveal inline-block text-white drop-shadow-[0_2px_0_rgba(10,10,10,.8)]">LOSE</span>
-            <span class="word-reveal inline-block text-white drop-shadow-[0_2px_0_rgba(10,10,10,.8)]">ANOTHER</span>
-            <span class="word-reveal inline-block accent-underline text-[#E91E8C]">CLIENT</span>
-            <span class="word-reveal inline-block text-white drop-shadow-[0_2px_0_rgba(10,10,10,.8)]">BECAUSE</span>
-            <span class="word-reveal inline-block text-white drop-shadow-[0_2px_0_rgba(10,10,10,.8)]">YOU DIDN'T</span>
-            <span class="word-reveal inline-block accent-underline text-[#E91E8C]">FOLLOW UP</span>
-            <span class="word-reveal inline-block text-white drop-shadow-[0_2px_0_rgba(10,10,10,.8)]">FAST ENOUGH.</span>
+      <!-- Dark overlay for text contrast -->
+      <div class="absolute inset-0 bg-black/35 z-[1]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(233,30,140,.18),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(233,30,140,.12),transparent_32%)] z-[2]"></div>
+      <div class="absolute inset-0 opacity-40 z-[2]" id="sparkleLayer" aria-hidden="true"></div>
+      
+      <div class="mx-auto flex min-h-[95vh] max-w-7xl items-center px-4 py-20 sm:px-6 md:px-8 lg:px-12 relative z-[3]">
+        <div class="max-w-6xl">
+          <p class="word-reveal mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-white">Luxury SmartSite for MUAs & Hairstylists ✦</p>
+          
+          <h1 class="hero-text-shadow max-w-6xl text-[4.8rem] font-extrabold leading-[0.82] text-white sm:text-[6.5rem] lg:text-[9.2rem]">
+            <span class="word-reveal inline-block">NEVER</span>
+            <span class="word-reveal inline-block">LOSE</span>
+            <span class="word-reveal inline-block">ANOTHER</span>
+            <span class="word-reveal inline-block text-[#E91E8C]">CLIENT</span>
+            <span class="word-reveal inline-block">BECAUSE</span>
+            <span class="word-reveal inline-block">YOU DIDN'T</span>
+            <span class="word-reveal inline-block">FOLLOW UP</span>
+            <span class="word-reveal inline-block text-[#E91E8C]">FAST</span>
+            <span class="word-reveal inline-block">ENOUGH.</span>
           </h1>
-          <p class="reveal-on-scroll mt-6 max-w-2xl text-lg leading-8 text-black/80 sm:text-xl">
-            A luxury SmartSite + automated bridal booking system built for makeup artists &amp; hairstylists.
-          </p>
-          <div class="reveal-on-scroll mt-10 flex flex-col gap-4 sm:flex-row">
-            <a href="https://bff.marketing/demo-survey" class="cta-primary inline-flex items-center justify-center rounded-full bg-[#E91E8C] px-8 py-4 text-base font-extrabold uppercase tracking-[0.18em] text-white transition hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(233,30,140,.35)]">
+
+          <div class="reveal-on-scroll mt-10 max-w-2xl">
+            <p class="inline-block rounded-2xl border border-white/20 bg-white/40 px-6 py-4 text-xl font-semibold leading-relaxed text-[#1a1a1a] backdrop-blur-lg sm:text-2xl">
+              A luxury SmartSite + automated bridal booking system built for makeup artists &amp; hairstylists.
+            </p>
+          </div>
+
+          <div class="reveal-on-scroll mt-12 flex flex-col gap-5 sm:flex-row">
+            <a href="https://bff.marketing/demo-survey" class="cta-primary inline-flex items-center justify-center rounded-full bg-[#E91E8C] px-10 py-5 text-base font-extrabold uppercase tracking-[0.18em] text-white shadow-[0_10px_25px_-5px_rgba(233,30,140,0.4)] transition hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(233,30,140,0.5)]">
               Get Your Free Demo
             </a>
-            <a href="#features" class="inline-flex items-center justify-center rounded-full border-2 border-black px-8 py-4 text-base font-extrabold uppercase tracking-[0.18em] text-black transition hover:-translate-y-1 hover:bg-black hover:text-white">
+            <a href="#features" class="inline-flex items-center justify-center rounded-full border-2 border-black bg-transparent px-10 py-5 text-base font-extrabold uppercase tracking-[0.18em] text-black transition hover:-translate-y-1 hover:bg-black hover:text-white">
               See How It Works
             </a>
           </div>
@@ -291,7 +297,6 @@
 
     <!-- ============================================================================ -->
     <!-- SOCIAL PROOF TICKER: Infinite marquee for brand credibility and momentum    -->
-    <!-- Features: Pink band, repeating benefit statements, motion-rich rhythm       -->
     <!-- ============================================================================ -->
     <section data-section="ticker" class="overflow-hidden bg-[#E91E8C] py-4 text-white">
       <div class="marquee gap-10 whitespace-nowrap text-sm font-bold uppercase tracking-[0.35em] sm:text-base">
@@ -303,7 +308,6 @@
 
     <!-- ============================================================================ -->
     <!-- FEATURES SECTION: Luxury glass cards describing the system's core benefits  -->
-    <!-- Features: Dark background, 2x3 grid, pink glow hover states, scroll reveal   -->
     <!-- ============================================================================ -->
     <section id="features" data-section="features" class="bg-[#0A0A0A] text-white">
       <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8 lg:px-12">
@@ -349,7 +353,6 @@
 
     <!-- ============================================================================ -->
     <!-- PIPELINE SECTION: Bridal workflow timeline with glowing connector line      -->
-    <!-- Features: Alternating cards, vertical workflow, animated pink path          -->
     <!-- ============================================================================ -->
     <section id="pipeline" data-section="pipeline" class="relative overflow-hidden bg-gradient-to-b from-[#FFF7FC] via-white to-[#FDEAF4] text-black">
       <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8 lg:px-12">
@@ -380,7 +383,6 @@
 
     <!-- ============================================================================ -->
     <!-- AI TOOLS SECTION: Dark gradient tech-forward panels with glowing AI badges  -->
-    <!-- Features: 2x2 grid, branded assistant modules, pink glow + hover motion      -->
     <!-- ============================================================================ -->
     <section id="ai-tools" data-section="ai-tools" class="bg-gradient-to-br from-[#0A0A0A] via-[#16060f] to-[#2b0a1c] text-white">
       <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8 lg:px-12">
@@ -420,7 +422,6 @@
 
     <!-- ============================================================================ -->
     <!-- AUDIENCE SECTION: Pink gradient persona/fit cards for target customer match  -->
-    <!-- Features: Bold yes-list, luxury contrast, confident positioning               -->
     <!-- ============================================================================ -->
     <section data-section="audience" class="bg-gradient-to-br from-[#F8B4D9] via-white to-[#F472B6] text-black">
       <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8 lg:px-12">
@@ -441,7 +442,6 @@
 
     <!-- ============================================================================ -->
     <!-- PRICING SECTION: Three-tier offer stack with featured center package         -->
-    <!-- Features: Dark theme, price emphasis, hover lift, conversion-focused CTAs    -->
     <!-- ============================================================================ -->
     <section id="pricing" data-section="pricing" class="bg-[#0A0A0A] text-white">
       <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:px-8 lg:px-12">
@@ -488,7 +488,6 @@
 
     <!-- ============================================================================ -->
     <!-- FOUNDER SECTION: Personal brand story and trust-building introduction        -->
-    <!-- Features: Light pink editorial panel, intimate copy, strong personal CTA    -->
     <!-- ============================================================================ -->
     <section data-section="founder" class="bg-[#FFF1F8] text-black">
       <div class="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:px-8 lg:grid-cols-[1.1fr_.9fr] lg:px-12">
@@ -512,7 +511,6 @@
 
     <!-- ============================================================================ -->
     <!-- CTA BANNER: Conversion-focused full-width hot pink gradient                   -->
-    <!-- Features: Giant headline, strong urgency, single primary action             -->
     <!-- ============================================================================ -->
     <section data-section="cta-banner" class="bg-gradient-to-r from-[#F472B6] via-[#E91E8C] to-[#F472B6] text-white">
       <div class="mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 md:px-8 lg:px-12">
@@ -525,7 +523,6 @@
 
   <!-- ============================================================================ -->
   <!-- FOOTER: Brand closure with utility links, privacy, and social icon           -->
-  <!-- Features: Dark minimal footer, legal links, copyright, polished finish      -->
   <!-- ============================================================================ -->
   <footer data-section="footer" class="bg-[#0A0A0A] text-white">
     <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:px-8 lg:px-12">
