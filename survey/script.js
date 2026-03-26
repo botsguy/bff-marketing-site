@@ -1,20 +1,11 @@
-// After form submits inside iframe, redirect to demo
-              window.addEventListener('message', function(e) {
-                if (e.data && (e.data.type === 'form_submitted' || e.data.type === 'paymegpt_form_success' || e.data === 'submitted')) {
-                  setTimeout(function() {
-                    window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
-                  }, 800);
-                }
-              });
+window.answers = {
+      businessType: '',
+      bookingMethod: '',
+      frustrations: [],
+      bookingsPerMonth: ''
+    };
 
-(function () {
-      const state = {
-        businessType: '',
-        bookingMethod: '',
-        frustrations: [],
-        bookingsPerMonth: ''
-      };
-
+    (function () {
       const steps = Array.from(document.querySelectorAll('.slide-step'));
       const stepCount = document.getElementById('stepCount');
       const progressFill = document.getElementById('progressFill');
@@ -53,12 +44,12 @@
         const isMulti = field === 'frustrations';
 
         if (isMulti) {
-          const index = state.frustrations.indexOf(value);
+          const index = window.answers.frustrations.indexOf(value);
           if (index > -1) {
-            state.frustrations.splice(index, 1);
+            window.answers.frustrations.splice(index, 1);
             button.classList.remove('selected');
           } else {
-            state.frustrations.push(value);
+            window.answers.frustrations.push(value);
             button.classList.add('selected');
           }
           return;
@@ -66,7 +57,7 @@
 
         parentStep.querySelectorAll(`[data-field="${field}"]`).forEach((btn) => btn.classList.remove('selected'));
         button.classList.add('selected');
-        state[field] = value;
+        window.answers[field] = value;
 
         if (field === 'businessType') document.getElementById('next1').disabled = false;
         if (field === 'bookingMethod') document.getElementById('next2').disabled = false;
@@ -96,3 +87,47 @@
 
       showStep(1);
     })();
+
+    async function submitSurvey() {
+      const nameVal = document.getElementById('survey-name').value.trim();
+      const emailVal = document.getElementById('survey-email').value.trim();
+      
+      if (!nameVal || !emailVal) {
+        alert('Please enter your name and email to continue.');
+        return;
+      }
+      
+      if (!emailVal.includes('@')) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      // Update button state
+      const btn = document.getElementById('survey-submit-btn');
+      btn.textContent = 'Let me show you the demo...';
+      btn.style.opacity = '0.8';
+      btn.style.cursor = 'not-allowed';
+
+      // Save everything to localStorage
+      const surveyData = {
+        name: nameVal,
+        email: emailVal,
+        businessType: typeof answers !== 'undefined' ? (answers.businessType || answers.step1 || '') : '',
+        bookingMethod: typeof answers !== 'undefined' ? (answers.bookingMethod || answers.step2 || '') : '',
+        frustrations: typeof answers !== 'undefined' ? (Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || answers.step3 || '')) : '',
+        bookingsPerMonth: typeof answers !== 'undefined' ? (answers.bookingsPerMonth || answers.step4 || '') : ''
+      };
+      localStorage.setItem('bff_survey_answers', JSON.stringify(surveyData));
+
+      // Redirect to demo with all data in URL params
+      const params = new URLSearchParams({
+        name: surveyData.name,
+        email: surveyData.email,
+        bt: surveyData.businessType,
+        bm: surveyData.bookingMethod,
+        fr: surveyData.frustrations,
+        mb: surveyData.bookingsPerMonth
+      });
+
+      window.location.href = 'https://paymegpt.com/p/pdYB8WVW?' + params.toString();
+    }
