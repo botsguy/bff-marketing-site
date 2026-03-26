@@ -1,11 +1,18 @@
+// After form submits inside iframe, redirect to demo
+              window.addEventListener('message', function(e) {
+                if (e.data && (e.data.type === 'form_submitted' || e.data.type === 'paymegpt_form_success' || e.data === 'submitted')) {
+                  setTimeout(function() {
+                    window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
+                  }, 800);
+                }
+              });
+
 (function () {
       const state = {
         businessType: '',
         bookingMethod: '',
         frustrations: [],
-        bookingsPerMonth: '',
-        name: '',
-        email: ''
+        bookingsPerMonth: ''
       };
 
       const steps = Array.from(document.querySelectorAll('.slide-step'));
@@ -77,45 +84,6 @@
         if (currentStep > 1) showStep(currentStep - 1);
       }
 
-      // ===== FINAL FORM SUBMISSION =====
-      async function handleFinalSubmit(e) {
-        if (e) e.preventDefault();
-        
-        // Get inputs
-        const nameEl = document.querySelector('input[type="text"]');
-        const emailEl = document.querySelector('input[type="email"]');
-        const fullName = nameEl ? nameEl.value.trim() : '';
-        const emailVal = emailEl ? emailEl.value.trim() : '';
-
-        if (!fullName || !emailVal) {
-          alert('Please enter your name and email.');
-          return;
-        }
-
-        // Save to localStorage
-        localStorage.setItem('bff_survey_answers', JSON.stringify({
-          name: fullName,
-          email: emailVal,
-          businessType: state.businessType || '',
-          bookingMethod: state.bookingMethod || '',
-          frustrations: Array.isArray(state.frustrations) ? state.frustrations.join(', ') : (state.frustrations || ''),
-          bookingsPerMonth: state.bookingsPerMonth || ''
-        }));
-
-        // Build redirect URL with all data as query params
-        const params = new URLSearchParams({
-          name: fullName,
-          email: emailVal,
-          b: state.businessType || '',
-          m: state.bookingMethod || '',
-          f: Array.isArray(state.frustrations) ? state.frustrations.join(', ') : (state.frustrations || ''),
-          bpm: state.bookingsPerMonth || ''
-        });
-
-        // Redirect to demo page with data in URL
-        window.location.href = 'https://paymegpt.com/p/pdYB8WVW?' + params.toString();
-      }
-
       document.querySelectorAll('.tile-btn').forEach((button) => {
         button.addEventListener('click', () => handleTileClick(button));
       });
@@ -125,7 +93,6 @@
       document.getElementById('next3').addEventListener('click', goNext);
       document.getElementById('next4').addEventListener('click', goNext);
       backLink.addEventListener('click', goBack);
-      surveyForm.addEventListener('submit', handleFinalSubmit);
 
       showStep(1);
     })();
