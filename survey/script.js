@@ -87,7 +87,7 @@
         loadingState.classList.remove('hidden');
         surveyForm.classList.add('hidden');
 
-        const nameInput = document.querySelector('#fullName') || document.querySelector('input[type="text"]');
+        const nameInput = document.querySelector('#fullName') || document.querySelector('input[placeholder*="name" i]') || document.querySelector('input[type="text"]');
         const emailInput = document.querySelector('#email') || document.querySelector('input[type="email"]');
         const fullName = nameInput ? nameInput.value.trim() : '';
         const emailVal = emailInput ? emailInput.value.trim() : '';
@@ -101,28 +101,49 @@
           bookingsPerMonth: answers.bookingsPerMonth || ''
         }));
 
-        // POST to PayMeGPT native form (CORS-safe)
+        // Submit via hidden iframe to avoid CORS and page redirect
         try {
-          const formData = new FormData();
-          formData.append('Name', fullName);
-          formData.append('Email', emailVal);
-          formData.append('Business Type', answers.businessType || '');
-          formData.append('Booking Method', answers.bookingMethod || '');
-          formData.append('Frustrations', Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''));
-          formData.append('Monthly Bookings', answers.bookingsPerMonth || '');
+          // Create hidden iframe to receive the form response
+          const iframe = document.createElement('iframe');
+          iframe.name = 'bff_submit_frame';
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
 
-          await fetch('https://paymegpt.com/forms/3ga53q26/submit', {
-            method: 'POST',
-            mode: 'no-cors',
-            body: formData
-          });
+          // Create hidden form targeting the iframe
+          const hiddenForm = document.createElement('form');
+          hiddenForm.method = 'POST';
+          hiddenForm.action = 'https://paymegpt.com/forms/xdsb5rnv/submit';
+          hiddenForm.target = 'bff_submit_frame';
+          hiddenForm.style.display = 'none';
+
+          const fields = {
+            'Name': fullName,
+            'Email': emailVal,
+            'Business Type': answers.businessType || '',
+            'Booking Method': answers.bookingMethod || '',
+            'Frustrations': Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''),
+            'Monthly Bookings': answers.bookingsPerMonth || '',
+            'Submitted At': new Date().toLocaleString()
+          };
+
+          for (const [key, value] of Object.entries(fields)) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = value;
+            hiddenForm.appendChild(input);
+          }
+
+          document.body.appendChild(hiddenForm);
+          hiddenForm.submit();
+
+          // Small delay to let form submit before redirect
+          await new Promise(resolve => setTimeout(resolve, 800));
         } catch(e) {
-          console.log('Form error:', e);
+          console.log('Submit error:', e);
         }
 
-        setTimeout(() => {
-          window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
-        }, 1500);
+        window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
       }
 
       document.querySelectorAll('.tile-btn').forEach((button) => {
