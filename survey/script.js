@@ -119,15 +119,6 @@ window.answers = {
       };
       localStorage.setItem('bff_survey_answers', JSON.stringify(surveyData));
 
-      // Redirect to demo with all data in URL params
-      const params = new URLSearchParams({
-        name: surveyData.name,
-        email: surveyData.email,
-        bt: surveyData.businessType,
-        bm: surveyData.bookingMethod,
-        fr: surveyData.frustrations,
-        mb: surveyData.bookingsPerMonth
-      });
-
-      window.location.href = 'https://paymegpt.com/p/pdYB8WVW?' + params.toString();
+      // Redirect to demo page
+      window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
     }
