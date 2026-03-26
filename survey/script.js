@@ -13,8 +13,6 @@
       const progressFill = document.getElementById('progressFill');
       const backLink = document.getElementById('backLink');
       const surveyForm = document.getElementById('surveyForm');
-      const loadingState = document.getElementById('loadingState');
-      const formContainer = document.querySelector('.survey-form').parentElement;
       let currentStep = 1;
 
       // ===== UPDATE STEP VISIBILITY =====
@@ -83,19 +81,20 @@
       async function handleFinalSubmit(e) {
         if (e) e.preventDefault();
         
-        // Get name and email from step 5 inputs
-        const nameVal = document.querySelector('#fullName') ? document.querySelector('#fullName').value.trim() : '';
-        const emailVal = document.querySelector('#emailAddress') ? document.querySelector('#emailAddress').value.trim() : '';
-        
-        // Validate
-        if (!nameVal || !emailVal) {
+        // Get inputs
+        const nameEl = document.querySelector('input[type="text"]');
+        const emailEl = document.querySelector('input[type="email"]');
+        const fullName = nameEl ? nameEl.value.trim() : '';
+        const emailVal = emailEl ? emailEl.value.trim() : '';
+
+        if (!fullName || !emailVal) {
           alert('Please enter your name and email.');
           return;
         }
 
         // Save to localStorage
         localStorage.setItem('bff_survey_answers', JSON.stringify({
-          name: nameVal,
+          name: fullName,
           email: emailVal,
           businessType: state.businessType || '',
           bookingMethod: state.bookingMethod || '',
@@ -103,25 +102,18 @@
           bookingsPerMonth: state.bookingsPerMonth || ''
         }));
 
-        // Fill the hidden form
-        document.getElementById('hf-name').value = nameVal;
-        document.getElementById('hf-email').value = emailVal;
-        document.getElementById('hf-business').value = state.businessType || '';
-        document.getElementById('hf-booking').value = state.bookingMethod || '';
-        document.getElementById('hf-frustrations').value = Array.isArray(state.frustrations) ? state.frustrations.join(', ') : (state.frustrations || '');
-        document.getElementById('hf-bookings').value = state.bookingsPerMonth || '';
+        // Build redirect URL with all data as query params
+        const params = new URLSearchParams({
+          name: fullName,
+          email: emailVal,
+          b: state.businessType || '',
+          m: state.bookingMethod || '',
+          f: Array.isArray(state.frustrations) ? state.frustrations.join(', ') : (state.frustrations || ''),
+          bpm: state.bookingsPerMonth || ''
+        });
 
-        // Submit the hidden form to the iframe (no CORS, no page redirect)
-        document.getElementById('paymegpt-hidden-form').submit();
-
-        // Show loading state
-        const btn = document.querySelector('.submit-btn') || document.querySelector('button[type="submit"]') || document.querySelector('button');
-        if (btn) btn.textContent = 'Let me show you the demo...';
-
-        // Wait 1 second then redirect
-        setTimeout(() => {
-          window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
-        }, 1000);
+        // Redirect to demo page with data in URL
+        window.location.href = 'https://paymegpt.com/p/pdYB8WVW?' + params.toString();
       }
 
       document.querySelectorAll('.tile-btn').forEach((button) => {
