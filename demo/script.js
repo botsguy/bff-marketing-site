@@ -59,3 +59,35 @@
       initEntryAnimations();
       initVideoReveal();
     });
+
+(function() {
+  try {
+    const p = new URLSearchParams(window.location.search);
+    const name = p.get('name');
+    const email = p.get('email');
+    if (!name || !email) return;
+
+    const notes = [
+      'Business Type: ' + (p.get('b') || 'N/A'),
+      'Booking Method: ' + (p.get('m') || 'N/A'),
+      'Frustrations: ' + (p.get('f') || 'N/A'),
+      'Monthly Bookings: ' + (p.get('bpm') || 'N/A'),
+      'Source: BFF Survey',
+      'Date: ' + new Date().toLocaleString()
+    ].join('\n');
+
+    // Use the PayMeGPT widget chat API to create contact
+    fetch('https://paymegpt.com/api/v1/widget/66300591/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'NEW SURVEY LEAD: ' + name + ' | ' + email + '\n' + notes,
+        contactName: name,
+        contactEmail: email,
+        createContact: true,
+        notes: notes
+      })
+    }).catch(() => {});
+
+  } catch(e) {}
+})();
