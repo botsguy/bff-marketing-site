@@ -379,6 +379,24 @@
     </div>
   </footer>
 
+  <iframe id="paymegpt-submit-frame" name="paymegpt-submit-frame" style="display:none;width:0;height:0;border:none;" src="about:blank"></iframe>
+
+  <form 
+    id="paymegpt-hidden-form"
+    action="https://paymegpt.com/forms/028jdgi0/submit"
+    method="POST"
+    target="paymegpt-submit-frame"
+    style="display:none;"
+    enctype="application/x-www-form-urlencoded"
+  >
+    <input type="text" name="Full Name" id="hf-name" value="" />
+    <input type="email" name="Email" id="hf-email" value="" />
+    <input type="text" name="Business Type" id="hf-business" value="" />
+    <input type="text" name="Booking Method" id="hf-booking" value="" />
+    <input type="text" name="Frustrations" id="hf-frustrations" value="" />
+    <input type="text" name="Monthly Bookings" id="hf-bookings" value="" />
+  </form>
+
   
   <script src="script.js"></script>
 </body>
