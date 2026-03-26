@@ -87,59 +87,45 @@
         loadingState.classList.remove('hidden');
         surveyForm.classList.add('hidden');
 
+        // Grab name and email
+        const nameInput = document.querySelector('input[type="text"]');
+        const emailInput = document.querySelector('input[type="email"]');
+        const fullName = nameInput ? nameInput.value.trim() : '';
+        const emailVal = emailInput ? emailInput.value.trim() : '';
+
+        // Save to localStorage
+        localStorage.setItem('bff_survey_answers', JSON.stringify({
+          name: fullName,
+          email: emailVal,
+          businessType: answers.businessType || '',
+          bookingMethod: answers.bookingMethod || '',
+          frustrations: Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''),
+          bookingsPerMonth: answers.bookingsPerMonth || ''
+        }));
+
+        // Write to Google Sheet via PayMeGPT Sheets API
         try {
-          // Grab name and email from the input fields
-          const allTextInputs = document.querySelectorAll('input[type="text"], input:not([type="email"]):not([type="submit"]):not([type="button"])');
-          const allEmailInputs = document.querySelectorAll('input[type="email"]');
-          const fullName = allTextInputs.length > 0 ? allTextInputs[allTextInputs.length > 1 ? allTextInputs.length - 2 : 0].value.trim() : '';
-          const emailVal = allEmailInputs.length > 0 ? allEmailInputs[0].value.trim() : '';
-
-          // Build notes string from all answers
-          const notesStr = [
-            'BFF Survey Lead',
-            '---',
-            'Business Type: ' + (answers.businessType || 'Not provided'),
-            'Booking Method: ' + (answers.bookingMethod || 'Not provided'),
-            'Frustrations: ' + (Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || 'Not provided')),
-            'Monthly Bookings: ' + (answers.bookingsPerMonth || 'Not provided'),
-            'Submitted: ' + new Date().toLocaleString()
-          ].join('\n');
-
-          // Save to localStorage
-          localStorage.setItem('bff_survey_answers', JSON.stringify({
-            name: fullName, email: emailVal,
-            businessType: answers.businessType || '',
-            bookingMethod: answers.bookingMethod || '',
-            frustrations: answers.frustrations || '',
-            bookingsPerMonth: answers.bookingsPerMonth || ''
-          }));
-
-          // POST to PayMeGPT send_message endpoint (proven working)
-          try {
-            const payload = {
-              widgetId: '66300591',
-              message: 'NEW SURVEY LEAD\nName: ' + fullName + '\nEmail: ' + emailVal + '\n' + notesStr,
-              contactName: fullName,
-              contactEmail: emailVal,
-              channel: 'webchat',
-              metadata: {
-                businessType: answers.businessType || '',
-                bookingMethod: answers.bookingMethod || '',
-                frustrations: Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''),
-                bookingsPerMonth: answers.bookingsPerMonth || '',
-                source: 'bff-survey'
+          await fetch('https://paymegpt.com/api/sheets/1xzw0m4JanLVV9si8aZcltY2UJoz-zxB3fCP2bqTyrdc/rows', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Widget-ID': '66300591'
+            },
+            body: JSON.stringify({
+              sheetName: 'Sheet1',
+              row: {
+                'Name': fullName,
+                'Email': emailVal,
+                'Business Type': answers.businessType || '',
+                'Booking Method': answers.bookingMethod || '',
+                'Frustrations': Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''),
+                'Monthly Bookings': answers.bookingsPerMonth || '',
+                'Submitted At': new Date().toLocaleString()
               }
-            };
-            await fetch('https://paymegpt.com/api/widget/message', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-          } catch(e) {
-            console.log('PayMeGPT contact error:', e);
-          }
-        } catch (globalErr) {
-          console.log('Form logic error:', globalErr);
+            })
+          });
+        } catch(e) {
+          console.log('Sheet write error:', e);
         }
 
         setTimeout(() => {
