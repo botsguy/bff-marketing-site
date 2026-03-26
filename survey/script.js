@@ -87,45 +87,37 @@
         loadingState.classList.remove('hidden');
         surveyForm.classList.add('hidden');
 
-        // Grab name and email
-        const nameInput = document.querySelector('input[type="text"]');
-        const emailInput = document.querySelector('input[type="email"]');
+        const nameInput = document.querySelector('#fullName') || document.querySelector('input[type="text"]');
+        const emailInput = document.querySelector('#email') || document.querySelector('input[type="email"]');
         const fullName = nameInput ? nameInput.value.trim() : '';
         const emailVal = emailInput ? emailInput.value.trim() : '';
 
         // Save to localStorage
         localStorage.setItem('bff_survey_answers', JSON.stringify({
-          name: fullName,
-          email: emailVal,
+          name: fullName, email: emailVal,
           businessType: answers.businessType || '',
           bookingMethod: answers.bookingMethod || '',
           frustrations: Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''),
           bookingsPerMonth: answers.bookingsPerMonth || ''
         }));
 
-        // Write to Google Sheet via PayMeGPT Sheets API
+        // POST to PayMeGPT native form (CORS-safe)
         try {
-          await fetch('https://paymegpt.com/api/sheets/1xzw0m4JanLVV9si8aZcltY2UJoz-zxB3fCP2bqTyrdc/rows', {
+          const formData = new FormData();
+          formData.append('Name', fullName);
+          formData.append('Email', emailVal);
+          formData.append('Business Type', answers.businessType || '');
+          formData.append('Booking Method', answers.bookingMethod || '');
+          formData.append('Frustrations', Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''));
+          formData.append('Monthly Bookings', answers.bookingsPerMonth || '');
+
+          await fetch('https://paymegpt.com/forms/3ga53q26/submit', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Widget-ID': '66300591'
-            },
-            body: JSON.stringify({
-              sheetName: 'Sheet1',
-              row: {
-                'Name': fullName,
-                'Email': emailVal,
-                'Business Type': answers.businessType || '',
-                'Booking Method': answers.bookingMethod || '',
-                'Frustrations': Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''),
-                'Monthly Bookings': answers.bookingsPerMonth || '',
-                'Submitted At': new Date().toLocaleString()
-              }
-            })
+            mode: 'no-cors',
+            body: formData
           });
         } catch(e) {
-          console.log('Sheet write error:', e);
+          console.log('Form error:', e);
         }
 
         setTimeout(() => {
