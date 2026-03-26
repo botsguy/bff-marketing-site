@@ -67,27 +67,51 @@
     const email = p.get('email');
     if (!name || !email) return;
 
-    const notes = [
-      'Business Type: ' + (p.get('b') || 'N/A'),
-      'Booking Method: ' + (p.get('m') || 'N/A'),
-      'Frustrations: ' + (p.get('f') || 'N/A'),
-      'Monthly Bookings: ' + (p.get('bpm') || 'N/A'),
-      'Source: BFF Survey',
-      'Date: ' + new Date().toLocaleString()
-    ].join('\n');
+    const bt = p.get('bt') || '';
+    const bm = p.get('bm') || '';
+    const fr = p.get('fr') || '';
+    const mb = p.get('mb') || '';
+    const submittedAt = new Date().toLocaleString();
 
-    // Use the PayMeGPT widget chat API to create contact
-    fetch('https://paymegpt.com/api/v1/widget/66300591/chat', {
+    // Write to Google Sheet via PayMeGPT API
+    fetch('https://paymegpt.com/api/v1/sheets/rows', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer api_467c627269da737e8946ed75ada458834a7d9b2a19f96705fe824537a831ec14'
+      },
       body: JSON.stringify({
-        message: 'NEW SURVEY LEAD: ' + name + ' | ' + email + '\n' + notes,
-        contactName: name,
-        contactEmail: email,
-        createContact: true,
-        notes: notes
+        spreadsheetId: '1xzw0m4JanLVV9si8aZcltY2UJoz-zxB3fCP2bqTyrdc',
+        sheetName: 'Sheet1',
+        data: {
+          'Name': name,
+          'Email': email,
+          'Business Type': bt,
+          'Booking Method': bm,
+          'Frustrations': fr,
+          'Monthly Bookings': mb,
+          'Submitted At': submittedAt
+        }
       })
-    }).catch(() => {});
+    }).catch(function(){});
+
+    // Create contact via PayMeGPT API
+    fetch('https://paymegpt.com/api/v1/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer api_467c627269da737e8946ed75ada458834a7d9b2a19f96705fe824537a831ec14'
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        widgetId: 66300591,
+        company: bt,
+        notes: 'Business Type: ' + bt + '\nBooking Method: ' + bm + '\nFrustrations: ' + fr + '\nMonthly Bookings: ' + mb + '\nSubmitted: ' + submittedAt,
+        pipelineId: 92,
+        pipelineStage: 'New Lead'
+      })
+    }).catch(function(){});
 
   } catch(e) {}
 })();
