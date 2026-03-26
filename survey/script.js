@@ -80,70 +80,48 @@
       }
 
       // ===== FINAL FORM SUBMISSION =====
-      async function handleSubmit(e) {
-        e.preventDefault();
-        const answers = state;
-
-        loadingState.classList.remove('hidden');
-        surveyForm.classList.add('hidden');
-
-        const nameInput = document.querySelector('#fullName') || document.querySelector('input[placeholder*="name" i]') || document.querySelector('input[type="text"]');
-        const emailInput = document.querySelector('#email') || document.querySelector('input[type="email"]');
-        const fullName = nameInput ? nameInput.value.trim() : '';
-        const emailVal = emailInput ? emailInput.value.trim() : '';
+      async function handleFinalSubmit(e) {
+        if (e) e.preventDefault();
+        
+        // Get name and email from step 5 inputs
+        const nameVal = document.querySelector('#fullName') ? document.querySelector('#fullName').value.trim() : '';
+        const emailVal = document.querySelector('#emailAddress') ? document.querySelector('#emailAddress').value.trim() : '';
+        
+        // Validate
+        if (!nameVal || !emailVal) {
+          alert('Please enter your name and email.');
+          return;
+        }
 
         // Save to localStorage
         localStorage.setItem('bff_survey_answers', JSON.stringify({
-          name: fullName, email: emailVal,
-          businessType: answers.businessType || '',
-          bookingMethod: answers.bookingMethod || '',
-          frustrations: Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''),
-          bookingsPerMonth: answers.bookingsPerMonth || ''
+          name: nameVal,
+          email: emailVal,
+          businessType: state.businessType || '',
+          bookingMethod: state.bookingMethod || '',
+          frustrations: Array.isArray(state.frustrations) ? state.frustrations.join(', ') : (state.frustrations || ''),
+          bookingsPerMonth: state.bookingsPerMonth || ''
         }));
 
-        // Submit via hidden iframe to avoid CORS and page redirect
-        try {
-          // Create hidden iframe to receive the form response
-          const iframe = document.createElement('iframe');
-          iframe.name = 'bff_submit_frame';
-          iframe.style.display = 'none';
-          document.body.appendChild(iframe);
+        // Fill the hidden form
+        document.getElementById('hf-name').value = nameVal;
+        document.getElementById('hf-email').value = emailVal;
+        document.getElementById('hf-business').value = state.businessType || '';
+        document.getElementById('hf-booking').value = state.bookingMethod || '';
+        document.getElementById('hf-frustrations').value = Array.isArray(state.frustrations) ? state.frustrations.join(', ') : (state.frustrations || '');
+        document.getElementById('hf-bookings').value = state.bookingsPerMonth || '';
 
-          // Create hidden form targeting the iframe
-          const hiddenForm = document.createElement('form');
-          hiddenForm.method = 'POST';
-          hiddenForm.action = 'https://paymegpt.com/forms/xdsb5rnv/submit';
-          hiddenForm.target = 'bff_submit_frame';
-          hiddenForm.style.display = 'none';
+        // Submit the hidden form to the iframe (no CORS, no page redirect)
+        document.getElementById('paymegpt-hidden-form').submit();
 
-          const fields = {
-            'Name': fullName,
-            'Email': emailVal,
-            'Business Type': answers.businessType || '',
-            'Booking Method': answers.bookingMethod || '',
-            'Frustrations': Array.isArray(answers.frustrations) ? answers.frustrations.join(', ') : (answers.frustrations || ''),
-            'Monthly Bookings': answers.bookingsPerMonth || '',
-            'Submitted At': new Date().toLocaleString()
-          };
+        // Show loading state
+        const btn = document.querySelector('.submit-btn') || document.querySelector('button[type="submit"]') || document.querySelector('button');
+        if (btn) btn.textContent = 'Let me show you the demo...';
 
-          for (const [key, value] of Object.entries(fields)) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = value;
-            hiddenForm.appendChild(input);
-          }
-
-          document.body.appendChild(hiddenForm);
-          hiddenForm.submit();
-
-          // Small delay to let form submit before redirect
-          await new Promise(resolve => setTimeout(resolve, 800));
-        } catch(e) {
-          console.log('Submit error:', e);
-        }
-
-        window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
+        // Wait 1 second then redirect
+        setTimeout(() => {
+          window.location.href = 'https://paymegpt.com/p/pdYB8WVW';
+        }, 1000);
       }
 
       document.querySelectorAll('.tile-btn').forEach((button) => {
@@ -155,7 +133,7 @@
       document.getElementById('next3').addEventListener('click', goNext);
       document.getElementById('next4').addEventListener('click', goNext);
       backLink.addEventListener('click', goBack);
-      surveyForm.addEventListener('submit', handleSubmit);
+      surveyForm.addEventListener('submit', handleFinalSubmit);
 
       showStep(1);
     })();
